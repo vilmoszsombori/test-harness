@@ -23,3 +23,7 @@ nb-configuration.xml
 # Maven
 /log/
 /target/
+/.mvn/
+mvnw
+mvnw.cmd
+
