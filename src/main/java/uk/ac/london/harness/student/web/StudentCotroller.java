@@ -19,7 +19,7 @@ public class StudentCotroller {
 
 	private StudentService studentService;
 
-	@RequestMapping("/product/{id}")
+	@RequestMapping("/student/{id}")
 	public String search(Model model, @PathVariable("id") String id, HttpServletRequest request) {
 		model.addAttribute("student", studentService.findById(id));
 		return "student";

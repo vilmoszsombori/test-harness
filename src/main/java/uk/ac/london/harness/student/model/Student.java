@@ -13,7 +13,7 @@ public class Student implements SearchableStudentDefinition {
 
 	private @Indexed(NAME_FIELD_NAME) String name;
 
-	private @Indexed(FILESIZE_FIELD_NAME) boolean filesize;
+	private @Indexed(FILESIZE_FIELD_NAME) String filesize;
 
 	private @Indexed(CAMEL_FIELD_NAME) String camel;
 
@@ -33,11 +33,11 @@ public class Student implements SearchableStudentDefinition {
 		this.name = name;
 	}
 
-	public boolean isFilesize() {
+	public String isFilesize() {
 		return filesize;
 	}
 
-	public void setFilesize(boolean filesize) {
+	public void setFilesize(String filesize) {
 		this.filesize = filesize;
 	}
 

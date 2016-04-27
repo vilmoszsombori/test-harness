@@ -30,10 +30,7 @@
 			<fmt:setLocale value="en_US"/>	
 			<c:forEach var="item" items="${page.content}" varStatus="status">
 				<div class="ui-widget-content ui-corner-all" style="margin-top: .5em; padding-left: .5em; background: ${status.index %2==0 ?'#eee':'#fff'}">
-					<h3><a href="<c:url value="/product/${item.id}" />">${item.name}</a></h3>
-					<c:if test="${fn:length(item.features) > 0}">${item.features[0]} <br /></c:if>
-					<c:if test="${item.price != null}">Price: <fmt:formatNumber value="${item.price}" type="currency"/><br /></c:if>
-					Available: ${item.available?"yes":"no"}<br />
+					<h3><a href="<c:url value="/student/${item.id}" />">${item.name}</a></h3>
 					<br />
 					<c:forEach var="highlight" items="${page.getHighlights(item) }" varStatus="highlightStatus">
 					${highlight.getSnipplets()}
@@ -41,7 +38,9 @@
 				</div>
 			</c:forEach>
 			<br />
+			<!-- 
 			<jsp:include page="../fragments/pager.jsp"></jsp:include>
+			-->
 		</c:otherwise>
 	</c:choose>
 </body>
