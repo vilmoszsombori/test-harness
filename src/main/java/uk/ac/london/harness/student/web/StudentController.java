@@ -15,11 +15,11 @@ import uk.ac.london.harness.student.StudentService;
 @Controller
 @Component
 @Scope("prototype")
-public class StudentCotroller {
+public class StudentController {
 
 	private StudentService studentService;
 
-	@RequestMapping("/student/{id}")
+	@RequestMapping("/students/{id}")
 	public String search(Model model, @PathVariable("id") String id, HttpServletRequest request) {
 		model.addAttribute("student", studentService.findById(id));
 		return "student";

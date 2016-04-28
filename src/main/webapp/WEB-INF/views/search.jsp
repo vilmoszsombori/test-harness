@@ -38,9 +38,7 @@
 				</div>
 			</c:forEach>
 			<br />
-			<!-- 
 			<jsp:include page="../fragments/pager.jsp"></jsp:include>
-			-->
 		</c:otherwise>
 	</c:choose>
 </body>

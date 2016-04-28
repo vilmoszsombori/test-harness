@@ -29,7 +29,7 @@
 		</h3>
 		<div>
 			<p>${student.id}</p>
-			<p>${student.filename}</p>
+			<p>${student.filesize}</p>
 			<p>${student.camel}</p>
 		</div>
 	</div>

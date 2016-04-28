@@ -33,7 +33,7 @@ public class Student implements SearchableStudentDefinition {
 		this.name = name;
 	}
 
-	public String isFilesize() {
+	public String getFilesize() {
 		return filesize;
 	}
 

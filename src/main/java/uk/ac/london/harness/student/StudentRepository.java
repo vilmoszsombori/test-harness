@@ -3,6 +3,7 @@ package uk.ac.london.harness.student;
 import java.util.Collection;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.solr.core.query.Query.Operator;
 import org.springframework.data.solr.core.query.result.FacetPage;
 import org.springframework.data.solr.core.query.result.HighlightPage;
@@ -13,6 +14,7 @@ import org.springframework.data.solr.repository.SolrCrudRepository;
 
 import uk.ac.london.harness.student.model.Student;
 
+@RepositoryRestResource
 public interface StudentRepository extends SolrCrudRepository<Student, String> {
 
 	@Highlight(prefix = "<b>", postfix = "</b>")
