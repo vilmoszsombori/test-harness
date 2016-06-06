@@ -1,6 +1,7 @@
 package uk.ac.london.co3326;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -18,9 +19,10 @@ public class Student {
 
 	public Student(String file) {
 		this.file = file;
-		String path = file.substring(0, file.lastIndexOf('/'));
+		System.out.println(file);
+		String path = file.substring(0, file.lastIndexOf(File.separatorChar));
 		testCase = new TestCase(path);
-		String[] temp = file.substring(file.lastIndexOf('/') + 1).split("_");
+		String[] temp = file.substring(file.lastIndexOf(File.separatorChar) + 1).split("_");
 		if (temp.length > 0)
 			name = temp[0];
 		if (temp.length > 1) {

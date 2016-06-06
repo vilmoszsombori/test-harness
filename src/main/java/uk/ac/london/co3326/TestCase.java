@@ -1,10 +1,12 @@
 package uk.ac.london.co3326;
 
+import java.io.File;
+
 import com.google.gson.Gson;
 
 public class TestCase {
 	
-	public static final String TEST_FILE = "test.txt";
+	public static String TEST_FILE = "test.txt";
 	
 	private transient String file;
 	private boolean successful;
@@ -28,7 +30,7 @@ public class TestCase {
 	}
 	
 	public TestCase(String path) {
-		this.file = path + "/" + TEST_FILE;
+		this.file = path + File.separator + TEST_FILE;
 	}
 	
 	public void setError(String error, String description) {
