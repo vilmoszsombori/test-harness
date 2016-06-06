@@ -14,11 +14,13 @@ public class Student {
 	private String camelCase;
 	private String srnFromFile;
 	private String srnFromRun;
-	private TestCase testCase = new TestCase("/Users/vilmos/OneDrive/Documents/UOL International/Marking/2016/CO3326_2016_CW1/test.txt");
+	private TestCase testCase;
 
 	public Student(String file) {
 		this.file = file;
-		String[] temp = file.substring(file.lastIndexOf('/')).split("_");
+		String path = file.substring(0, file.lastIndexOf('/'));
+		testCase = new TestCase(path);
+		String[] temp = file.substring(file.lastIndexOf('/') + 1).split("_");
 		if (temp.length > 0)
 			name = temp[0];
 		if (temp.length > 1) {
