@@ -21,12 +21,11 @@ public class Harness {
 	public static void main(String[] args) throws IOException {		
 		Options options = new Options();
 		options.addOption("f", "folder/file", true, "Folder, where the coursework JARs are located or coursework JAR, that is to be tested.");
-        options.addOption("t", "test", false, "Test tile (default: test.txt)");
+        options.addOption("t", "test", false, "Test file (default: test.txt)");
 		
         try {
             CommandLineParser parser = new DefaultParser();
             CommandLine commandLine = parser.parse(options, args);
-
             
             if (args.length == 0)
                 throw new ParseException("No arguments provided");
