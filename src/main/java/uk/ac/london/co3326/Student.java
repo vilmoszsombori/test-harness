@@ -40,7 +40,7 @@ public class Student {
 		
 	public void evaluate() {
 		String[] arg = new String[] { "java", "-jar", (path + File.separatorChar + file) , testCase.getFile()};
-		StringBuilder stderror = new StringBuilder();
+		StringBuilder stderr = new StringBuilder();
 		List<String> stdout = new ArrayList<>();
 		try {
 			Process p = Runtime.getRuntime().exec(arg);
@@ -51,21 +51,18 @@ public class Student {
 				stdout.add(line);
 			reader.close();
 			this.stdout = stdout.stream().collect(Collectors.joining("\n"));
-			if (stdout.size() < 3) {
-				testCase.setError("Unexpected output format", stdout.stream().collect(Collectors.joining("\n")));
-			} else {
-				camelCase = stdout.get(0);
-				srnFromRun = stdout.get(1);
-				testCase.evaluate(stdout.get(2));
-			}
-
 			reader = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 			while ((line = reader.readLine()) != null) {
-				stderror.append(line);
-				stderror.append(System.getProperty("line.separator"));
+				stderr.append(line);
+				stderr.append(System.getProperty("line.separator"));
 			}
 			reader.close();
-			this.stderr = stderr.toString();
+			this.stderr = stderr.toString();			
+			if (stdout.size() != 3)
+				throw new Exception("Unexpected output format");
+			camelCase = stdout.get(0);
+			srnFromRun = stdout.get(1);
+			testCase.evaluate(stdout.get(2));
 		} catch (Exception e) {
 			setError(e.getMessage(), stdout.stream().collect(Collectors.joining("\n")), stderr.toString());
 		} 			
@@ -76,7 +73,7 @@ public class Student {
 		this.stdout = stdout;
 		this.exception = exception;		
 	}
-
+	
 	public String getName() {
 		return name;
 	}
