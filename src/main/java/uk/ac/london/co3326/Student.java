@@ -2,7 +2,6 @@ package uk.ac.london.co3326;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,19 +9,23 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class Student {
+	private transient String path;
 	private String file;
 	private String name;
 	private String camelCase;
 	private String srnFromFile;
 	private String srnFromRun;
 	private TestCase testCase;
+	private String stdout;
+	private String stderr;
+	private String exception;
 
 	public Student(String file) {
 		this.file = file;
-		System.out.println(file);
-		String path = file.substring(0, file.lastIndexOf(File.separatorChar));
-		testCase = new TestCase(path);
-		String[] temp = file.substring(file.lastIndexOf(File.separatorChar) + 1).split("_");
+		this.path = file.substring(0, file.lastIndexOf(File.separatorChar));
+		this.file = file.substring(file.lastIndexOf(File.separatorChar) + 1);
+		this.testCase = new TestCase(path);
+		String[] temp = this.file.split("_");
 		if (temp.length > 0)
 			name = temp[0];
 		if (temp.length > 1) {
@@ -36,16 +39,18 @@ public class Student {
 	}
 		
 	public void evaluate() {
-		String[] arg = new String[] { "java", "-jar", file , testCase.getFile()};
+		String[] arg = new String[] { "java", "-jar", (path + File.separatorChar + file) , testCase.getFile()};
+		StringBuilder stderror = new StringBuilder();
+		List<String> stdout = new ArrayList<>();
 		try {
 			Process p = Runtime.getRuntime().exec(arg);
 			p.waitFor(10, TimeUnit.SECONDS);
 			BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			String line = null;
-			List<String> stdout = new ArrayList<>();
 			while ((line = reader.readLine()) != null)
 				stdout.add(line);
 			reader.close();
+			this.stdout = stdout.stream().collect(Collectors.joining("\n"));
 			if (stdout.size() < 3) {
 				testCase.setError("Unexpected output format", stdout.stream().collect(Collectors.joining("\n")));
 			} else {
@@ -55,19 +60,21 @@ public class Student {
 			}
 
 			reader = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-			// Save the output in a StringBuffer for further processing
-			StringBuilder stderror = new StringBuilder();
 			while ((line = reader.readLine()) != null) {
 				stderror.append(line);
 				stderror.append(System.getProperty("line.separator"));
 			}
 			reader.close();
-			testCase.setError(stderror.toString());			
-		} catch (IOException e) {
-			testCase.setError("IOException", e.getMessage());
-		} catch (InterruptedException e) {
-			testCase.setError("InterruptedException", e.getMessage());
-		}				
+			this.stderr = stderr.toString();
+		} catch (Exception e) {
+			setError(e.getMessage(), stdout.stream().collect(Collectors.joining("\n")), stderr.toString());
+		} 			
+	}
+	
+	public void setError(String exception, String stdout, String stderr) {
+		this.stderr = stderr;
+		this.stdout = stdout;
+		this.exception = exception;		
 	}
 
 	public String getName() {
@@ -100,5 +107,17 @@ public class Student {
 
 	public void setSrnFromRun(String srnFromRun) {
 		this.srnFromRun = srnFromRun;
+	}
+
+	public String getStdout() {
+		return stdout;
+	}
+
+	public String getStderr() {
+		return stderr;
+	}
+
+	public String getException() {
+		return exception;
 	}
 }
