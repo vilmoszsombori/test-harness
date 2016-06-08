@@ -18,22 +18,7 @@ public class TestSuite {
 
 	public void evaluate(String input) {
 		init(input);
-		tests.add(new TestCase() {
-			@Override
-			public void evaluate() {
-				setDescription("Private key");
-				try {
-					setSuccessful(object.getAlice().getD() == etalon.getAlice().getD());
-					if (!isSuccessful()) {
-						setError(String.format("Private key missmatch: Alice [expected=%d, actual=%d]",
-								etalon.getAlice().getD(), object.getAlice().getD()));
-					}
-				} catch (Exception e) {
-					setSuccessful(false);
-					setError(e.getMessage());
-				}
-			}
-		});
+		tests.stream().forEach(t -> t.evaluate());
 	}
 
 	private void init(String input) {
@@ -42,6 +27,8 @@ public class TestSuite {
 		etalon.demonstrate();
 
 		object = gson.fromJson(input, Cw1.class);
+		
+		tests.add(new PrivateKeyTest(object, etalon));
 	}
 
 	public TestSuite(String path) {
