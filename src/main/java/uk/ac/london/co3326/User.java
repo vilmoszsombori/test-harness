@@ -26,7 +26,7 @@ public class User {
         return rsa.getE();
     }
 
-    private int getD() {
+    public int getD() {
     	if (rsa == null) {
     		rsa = new Rsa();
     	}

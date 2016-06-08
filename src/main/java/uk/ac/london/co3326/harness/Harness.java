@@ -1,4 +1,4 @@
-package uk.ac.london.co3326;
+package uk.ac.london.co3326.harness;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,7 +34,7 @@ public class Harness {
             if (args.length == 0)
                 throw new ParseException("No arguments provided");
             if (commandLine.hasOption("t"))
-                TestCase.TEST_FILE = commandLine.getOptionValue("t");
+                TestSuite.TEST_FILE = commandLine.getOptionValue("t");
             
             String path = commandLine.getOptionValue("f");
             File file = new File(path);
@@ -54,7 +54,7 @@ public class Harness {
             }
             
             Gson gson = new Gson();
-            System.out.println(gson.toJson(harness));                           	    
+            System.out.println(gson.toJson(harness.getResults()));                           	    
             // this can be fed into http://json2table.com/ to get the results in a tabular form
         } catch (ParseException e) {
             System.err.println(e.getMessage());
@@ -67,6 +67,10 @@ public class Harness {
         Student student = new Student(path);
         student.evaluate();
         results.add(student);        
+	}
+	
+	public List<Student> getResults() {
+		return this.results;
 	}
 
 }

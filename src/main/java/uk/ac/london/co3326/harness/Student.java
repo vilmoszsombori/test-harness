@@ -1,4 +1,4 @@
-package uk.ac.london.co3326;
+package uk.ac.london.co3326.harness;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,7 +15,7 @@ public class Student {
 	private String camelCase;
 	private String srnFromFile;
 	private String srnFromRun;
-	private TestCase testCase;
+	private TestSuite testCase;
 	private String stdout;
 	private String stderr;
 	private String exception;
@@ -24,7 +24,7 @@ public class Student {
 		this.file = file;
 		this.path = file.substring(0, file.lastIndexOf(File.separatorChar));
 		this.file = file.substring(file.lastIndexOf(File.separatorChar) + 1);
-		this.testCase = new TestCase(path);
+		this.testCase = new TestSuite(path);
 		String[] temp = this.file.split("_");
 		if (temp.length > 0)
 			name = temp[0];
