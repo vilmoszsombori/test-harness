@@ -15,7 +15,7 @@ public class Student {
 	private String camelCase;
 	private String srnFromFile;
 	private String srnFromRun;
-	private TestSuite testCase;
+	private TestSuite testSuite;
 	private String stdout;
 	private String stderr;
 	private String exception;
@@ -24,7 +24,7 @@ public class Student {
 		this.file = file;
 		this.path = file.substring(0, file.lastIndexOf(File.separatorChar));
 		this.file = file.substring(file.lastIndexOf(File.separatorChar) + 1);
-		this.testCase = new TestSuite(path);
+		this.testSuite = new TestSuite(path);
 		String[] temp = this.file.split("_");
 		if (temp.length > 0)
 			name = temp[0];
@@ -39,7 +39,7 @@ public class Student {
 	}
 		
 	public void evaluate() {
-		String[] arg = new String[] { "java", "-jar", (path + File.separatorChar + file) , testCase.getFile()};
+		String[] arg = new String[] { "java", "-jar", (path + File.separatorChar + file) , testSuite.getFile()};
 		StringBuilder stderr = new StringBuilder();
 		List<String> stdout = new ArrayList<>();
 		try {
@@ -62,7 +62,7 @@ public class Student {
 				throw new Exception("Unexpected output format");
 			camelCase = stdout.get(0);
 			srnFromRun = stdout.get(1);
-			testCase.evaluate(stdout.get(2));
+			testSuite.evaluate(stdout.get(2));
 		} catch (Exception e) {
 			setError(e.getMessage(), stdout.stream().collect(Collectors.joining("\n")), stderr.toString());
 		} 			
