@@ -1,8 +1,8 @@
-package uk.ac.london.co3326;
+package uk.ac.london.co3326.harness;
 
 import com.google.gson.Gson;
 
-import uk.ac.london.co3326.harness.TestCase;
+import uk.ac.london.co3326.Cw1;
 
 public abstract class UnaryTest extends TestCase<Cw1> {
 
@@ -21,15 +21,14 @@ public abstract class UnaryTest extends TestCase<Cw1> {
     }
 
     @Override
-    public boolean evaluate(String input) {
+    public int evaluate(String input) {
         try {
             init(input);
-            setSuccessful(pass());
+            setScore(pass() ? 1 : 0);
         } catch (Exception e) {
-            setSuccessful(false);
             setError(e.getMessage());
         }
-        return isSuccessful();
+        return getScore();
     }
 
     public abstract boolean pass();

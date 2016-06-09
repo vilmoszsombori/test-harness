@@ -4,18 +4,18 @@ import uk.ac.london.co3326.Coursework;
 
 public abstract class TestCase<T extends Coursework> {
 
-	private boolean successful = false;
+	private int score = 0;
 	private String error;
 	private String description;
 	protected transient T object, etalon;
 
     protected abstract void init(String input);
-	public abstract boolean evaluate(String input);
+	public abstract int evaluate(String input);
 	
 	public TestCase() {}
 		
-	public boolean isSuccessful() {
-		return successful;
+	public int getScore() {
+		return score;
 	}
 
 	public String getError() {
@@ -26,8 +26,8 @@ public abstract class TestCase<T extends Coursework> {
 		return description;
 	}
 
-	public void setSuccessful(boolean successful) {
-		this.successful = successful;
+	public void setScore(int score) {
+		this.score = score;
 	}
 
 	public void setError(String error) {

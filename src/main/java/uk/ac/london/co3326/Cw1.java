@@ -36,6 +36,7 @@ public class Cw1 implements Coursework {
         }
         // message from Alice to Bob as intercepted by Charlie
         String message = communication.remove(0).getText();
+        communication.clear();
         communication.add(new Message(message, Util.toByteArray(message)));
         int[] cipher = getAlice().send(getCharlie(), message);
         communication.add(new Message(cipher));
@@ -45,6 +46,10 @@ public class Cw1 implements Coursework {
         communication.add(new Message(cipher));
         String received = getBob().receive(getCharlie(), cipher);
         communication.add(new Message(received, Util.toByteArray(received)));
+    }
+    
+    public List<Message> getCommunication() {
+    	return this.communication;
     }
 
 }

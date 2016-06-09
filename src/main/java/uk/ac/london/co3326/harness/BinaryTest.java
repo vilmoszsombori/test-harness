@@ -27,18 +27,17 @@ public abstract class BinaryTest extends TestCase<Cw1> {
     }
 	
 	@Override
-	public boolean evaluate(String input) {
+	public int evaluate(String input) {
 		try {
 		    init(input);
-			setSuccessful(Objects.equal(expected(), actual()));
-			if (!isSuccessful()) {
-				setError(String.format("Missmatch: expected=%d, actual=%d", expected(), actual()));
+			setScore(Objects.equal(expected(), actual()) ? 1 : 0);
+			if (getScore() == 0) {
+				setError(String.format("Missmatch: expected=%s, actual=%s", expected(), actual()));
 			}
 		} catch (Exception e) {
-			setSuccessful(false);
 			setError(e.getMessage());
 		}
-		return isSuccessful();
+		return getScore();
 	}
 	
 	public abstract Object expected();
