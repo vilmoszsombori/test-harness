@@ -8,14 +8,16 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-public class Student {
+import uk.ac.london.co3326.Coursework;
+
+public class Student<T extends Coursework> {
 	private transient String path;
 	private String file;
 	private String name;
 	private String camelCase;
 	private String srnFromFile;
 	private String srnFromRun;
-	private TestSuite testSuite;
+	private TestSuite<T> testSuite;
 	private String stdout;
 	private String stderr;
 	private String exception;
@@ -24,7 +26,7 @@ public class Student {
 		this.file = file;
 		this.path = file.substring(0, file.lastIndexOf(File.separatorChar));
 		this.file = file.substring(file.lastIndexOf(File.separatorChar) + 1);
-		this.testSuite = new TestSuite(path);
+		this.testSuite = new TestSuite<>(path);
 		String[] temp = this.file.split("_");
 		if (temp.length > 0)
 			name = temp[0];
@@ -42,6 +44,7 @@ public class Student {
 		String[] arg = new String[] { "java", "-jar", (path + File.separatorChar + file) , testSuite.getFile()};
 		StringBuilder stderr = new StringBuilder();
 		List<String> stdout = new ArrayList<>();
+		boolean result = false;
 		try {
 			Process p = Runtime.getRuntime().exec(arg);
 			p.waitFor(10, TimeUnit.SECONDS);
@@ -57,12 +60,16 @@ public class Student {
 				stderr.append(System.getProperty("line.separator"));
 			}
 			reader.close();
-			this.stderr = stderr.toString();			
-			if (stdout.size() != 3)
+			this.stderr = stderr.toString();
+            this.camelCase = stdout.get(0);
+            this.srnFromRun = stdout.get(1);
+			if (stdout.size() < 3)
 				throw new Exception("Unexpected output format");
-			camelCase = stdout.get(0);
-			srnFromRun = stdout.get(1);
-			testSuite.evaluate(stdout.get(2));
+			if (stdout.get(2) == null || stdout.isEmpty())
+                throw new Exception("Line 3 is null or empty");
+			result = testSuite.evaluate(stdout.get(2));
+			if (result)
+			    this.stdout = null;
 		} catch (Exception e) {
 			setError(e.getMessage(), stdout.stream().collect(Collectors.joining("\n")), stderr.toString());
 		} 			

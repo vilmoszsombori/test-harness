@@ -85,5 +85,8 @@ public class User {
         return Util.toString(message) + " :: intercepted";
     }
     
+    public Rsa getRsa() {
+        return this.rsa;
+    }
     
 }

@@ -1,13 +1,19 @@
 package uk.ac.london.co3326.harness;
 
-public abstract class TestCase {
+import uk.ac.london.co3326.Coursework;
 
-	private boolean successful;
+public abstract class TestCase<T extends Coursework> {
+
+	private boolean successful = false;
 	private String error;
 	private String description;
+	protected transient T object, etalon;
 
-	public abstract void evaluate();
+    protected abstract void init(String input);
+	public abstract boolean evaluate(String input);
 	
+	public TestCase() {}
+		
 	public boolean isSuccessful() {
 		return successful;
 	}
@@ -30,6 +36,14 @@ public abstract class TestCase {
 	
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public T getObject() {
+	    return this.object;
+	}
+	
+	public T getEtalon() {
+	    return this.etalon;
 	}
 
 }

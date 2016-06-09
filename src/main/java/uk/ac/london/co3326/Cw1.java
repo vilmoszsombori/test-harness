@@ -2,7 +2,7 @@ package uk.ac.london.co3326;
 
 import java.util.List;
 
-public class Cw1 {
+public class Cw1 implements Coursework {
 
     private User alice;
     private User bob;
@@ -28,7 +28,8 @@ public class Cw1 {
     	    charlie = new User("charlie");
     	return charlie;
     }
-        
+
+    @Override
     public void demonstrate() {
         if (communication == null || communication.isEmpty()) {
             throw new RuntimeException("No message to send");

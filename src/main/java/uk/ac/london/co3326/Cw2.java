@@ -3,7 +3,7 @@ package uk.ac.london.co3326;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Cw2 {
+public class Cw2 implements Coursework {
 
     private User A;
     private User B;
@@ -38,7 +38,8 @@ public class Cw2 {
         S.setName("S");
         return S;
     }
-        
+    
+    @Override        
     public void demonstrate() {
         // protocol of authentication between Alice and Bob using a trusted Server
         

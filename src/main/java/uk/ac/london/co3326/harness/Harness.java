@@ -18,13 +18,15 @@ import org.apache.commons.cli.ParseException;
 
 import com.google.gson.Gson;
 
+import uk.ac.london.co3326.Cw1;
+
 public class Harness {
 	
-	private List<Student> results = new ArrayList<>();
+	private List<Student<?>> results = new ArrayList<>();
 
 	public static void main(String[] args) throws IOException {		
 		Options options = new Options();
-		options.addOption("f", "folder/file", true, "Folder, where the coursework JARs are located or coursework JAR, that is to be tested.");
+		options.addOption("f", "file", true, "Folder, where the coursework JARs are located or coursework JAR, that is to be tested.");
         options.addOption("t", "test", false, "Test file (default: test.txt)");
 		
         try {
@@ -64,12 +66,12 @@ public class Harness {
 	}
 	
 	private void test(String path) {
-        Student student = new Student(path);
+        Student<Cw1> student = new Student<>(path);
         student.evaluate();
         results.add(student);        
 	}
 	
-	public List<Student> getResults() {
+	public List<Student<?>> getResults() {
 		return this.results;
 	}
 
