@@ -12,21 +12,25 @@ public class User {
         this.name = name;
     }
         
-    public int getN() {
+    public long getN() {
     	if (rsa == null) {
     		rsa = new Rsa();
     	}
         return rsa.getN();
     }
 
-    public int getE() {
+    public long getE() {
     	if (rsa == null) {
     		rsa = new Rsa();
     	}
         return rsa.getE();
     }
 
-    public int getD() {
+    public long getUncomputedD() {
+        return rsa.getUncomputedD();        
+    }
+    
+    public long getD() {
     	if (rsa == null) {
     		rsa = new Rsa();
     	}
@@ -50,17 +54,17 @@ public class User {
     }
     
     public Message sign(String message) {
-        int[] encoded = Util.toByteArray(message);
+        long[] encoded = Util.toByteArray(message);
         return new Message(message, encoded, Rsa.crypt(encoded, getD(), getN()));
     }
 
     public Message encrypt(String message) {
-        int[] encoded = Util.toByteArray(message);
+        long[] encoded = Util.toByteArray(message);
         return new Message(message, encoded, Rsa.crypt(encoded, getE(), getN()));
     }
     
-    public int[] send(User user, String message) {
-        int[] input = Util.toByteArray(message);
+    public long[] send(User user, String message) {
+        long[] input = Util.toByteArray(message);
         // encrypt with the smaller first
         if (getN() < user.getN()) {
             return Rsa.crypt(Rsa.crypt(input, getD(), getN()), user.getE(), user.getN());                                       
@@ -69,20 +73,20 @@ public class User {
         }
     }
     
-    public String receive(User user, int[] cipher) {
+    public String receive(User user, long[] cipher) {
         // decrypt with the larger first
-        int[] message = (getN() > user.getN()) ? 
+        long[] message = (getN() > user.getN()) ? 
                 Rsa.crypt(Rsa.crypt(cipher, getD(), getN()), user.getE(), user.getN()) :
                 Rsa.crypt(Rsa.crypt(cipher, user.getE(), user.getN()), getD(), getN());
     	return Util.toString(message) + " :: received";
     }
    
-    public String intercept(User user, int[] cipher) {
+    public String intercept(User user, long[] cipher) {
         // decrypt with the larger first
-        int[] message = (getN() > user.getN()) ? 
+        long[] message = (getN() > user.getN()) ? 
                 Rsa.crypt(Rsa.crypt(cipher, getD(), getN()), user.getE(), user.getN()) :
                 Rsa.crypt(Rsa.crypt(cipher, user.getE(), user.getN()), getD(), getN());
-        return Util.toString(message) + " :: intercepted";
+        return Util.toString(message) + " :: longercepted";
     }
     
     public Rsa getRsa() {

@@ -5,19 +5,19 @@ import java.util.Arrays;
 public class Message {
 
     private String text;
-    private int[] encoded;
-    private int[] encrypted;
+    private long[] encoded;
+    private long[] encrypted;
 
     public Message() {}
 
-    public Message(String text, int[] encoded, int[] encrypted) {
+    public Message(String text, long[] encoded, long[] encrypted) {
         super();
         this.text = text;
         this.encoded = encoded;
         this.encrypted = encrypted;
     }
 
-    public Message(String text, int[] encoded) {
+    public Message(String text, long[] encoded) {
         super();
         this.text = text;
         this.encoded = encoded;
@@ -28,7 +28,7 @@ public class Message {
         this.text = text;
     }
 
-    public Message(int[] encoded) {
+    public Message(long[] encoded) {
         super();
         this.encoded = encoded;
     }
@@ -41,19 +41,19 @@ public class Message {
         this.text = text;
     }
 
-    public int[] getEncoded() {
+    public long[] getEncoded() {
         return encoded;
     }
     
-    public void setEncoded(int[] encoded) {
+    public void setEncoded(long[] encoded) {
         this.encoded = encoded;
     }
     
-    public int[] getEncrypted() {
+    public long[] getEncrypted() {
         return encrypted;
     }
 
-    public void setEncrypted(int[] encypted) {
+    public void setEncrypted(long[] encypted) {
         this.encrypted = encypted;
     }
 

@@ -41,7 +41,7 @@ public class Student<T extends Coursework> {
 	}
 		
 	public void evaluate() {
-		String[] arg = new String[] { "java", "-jar", (path + File.separatorChar + file) , testSuite.getFile()};
+		String[] arg = new String[] { "java", "-jar", (path + File.separatorChar + file) , TestSuite.getFile()};
 		StringBuilder stderr = new StringBuilder();
 		List<String> stdout = new ArrayList<>();
 		boolean result = false;
@@ -50,8 +50,11 @@ public class Student<T extends Coursework> {
 			p.waitFor(10, TimeUnit.SECONDS);
 			BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			String line = null;
-			while ((line = reader.readLine()) != null)
-				stdout.add(line);
+			while ((line = reader.readLine()) != null) {
+			    if (!line.trim().isEmpty() && (stdout.size() < 2 || (stdout.size() >= 2 || line.startsWith("{")))) {
+			        stdout.add(line);
+			    }
+			}
 			reader.close();
 			this.stdout = stdout.stream().collect(Collectors.joining("\n"));
 			reader = new BufferedReader(new InputStreamReader(p.getErrorStream()));

@@ -1,5 +1,7 @@
 package uk.ac.london.co3326.harness;
 
+import com.google.gson.Gson;
+
 import uk.ac.london.co3326.Coursework;
 
 public abstract class TestCase<T extends Coursework> {
@@ -8,6 +10,7 @@ public abstract class TestCase<T extends Coursework> {
 	private String error;
 	private String description;
 	protected transient T object, etalon;
+	protected transient Gson gson = new Gson(); 
 
     protected abstract void init(String input);
 	public abstract int evaluate(String input);

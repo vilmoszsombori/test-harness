@@ -5,65 +5,66 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 public class Util {
 	private static Random random = null;
 
-	public static boolean isPrime(int n) {
+	public static boolean isPrime(long n) {
 		// initially assume all integers are prime
-		boolean[] isPrime = new boolean[n + 1];
+		List<Boolean> isPrime = new ArrayList<>();
 		for (int i = 2; i <= n; i++) {
-			isPrime[i] = true;
+			isPrime.set(i, true);
 		}
 
 		// mark non-primes <= n using Sieve of Eratosthenes
 		for (int i = 2; i * i <= n; i++) {
 			// if i is prime, then mark multiples of i as nonprime
 			// suffices to consider multiples i, i+1, ..., N/i
-			if (isPrime[i]) {
+			if (isPrime.get(i)) {
 				for (int j = i; i * j <= n; j++) {
 					int k = i * j;
 					if (k == n)
 						return false;
-					isPrime[k] = false;
+					isPrime.set(k, false);
 				}
 			}
 		}
 
-		return isPrime[n];
+		return isPrime.get((int)n);
 	}
 
-	public static List<Integer> sieve(int max) {
+	public static List<Long> sieve(long max) {
 		// initially assume all integers are prime
-		boolean[] isPrime = new boolean[max + 1];
+	    int N = (int) max;
+		boolean[] isPrime = new boolean[N + 1];
 		for (int i = 2; i <= max; i++) {
 			isPrime[i] = true;
 		}
 
 		// mark non-primes <= N using Sieve of Eratosthenes
-		for (int i = 2; i * i <= max; i++) {
+		for (int i = 2; i * i <= N; i++) {
 
 			// if i is prime, then mark multiples of i as nonprime
 			// suffices to consider multiples i, i+1, ..., N/i
 			if (isPrime[i]) {
-				for (int j = i; i * j <= max; j++) {
+				for (int j = i; i * j <= N; j++) {
 					isPrime[i * j] = false;
 				}
 			}
 		}
 
-		List<Integer> primes = new ArrayList<>();
-		for (int i = 2; i <= max; i++) {
-			if (isPrime[i])
+		List<Long> primes = new ArrayList<>();
+		for (long i = 2; i <= N; i++) {
+			if (isPrime[(int)i])
 				primes.add(i);
 		}
 
 		return primes;
 	}
 
-	public static int ipow(int base, int exp) {
-		int result = 1;
+	public static long ipow(long base, long exp) {
+		long result = 1;
 		while (exp != 0) {
 			if ((exp & 1) != 0)
 				result *= base;
@@ -74,7 +75,7 @@ public class Util {
 		return result;
 	}
 
-	public static int ipow2(int base, int exp) {
+	public static long ipow2(long base, long exp) {
 		if (exp == 0) {
 			return 1;
 		} else {
@@ -82,11 +83,11 @@ public class Util {
 		}
 	}
 
-	public static int gcd(int a, int b) {
+	public static long gcd(long a, long b) {
 		return b == 0 ? Math.abs(a) : gcd(b, a % b);
 	}
 
-	public static int modExp(int base, int exp, int mod) {
+	public static long modExp(long base, long exp, long mod) {
 		long x = 1;
 		long y = base;
 		while (exp > 0) {
@@ -96,10 +97,10 @@ public class Util {
 			y = (y * y) % mod;
 			exp /= 2;
 		}
-		return (int) x % mod;
+		return x % mod;
 	}
 
-	public static int modInverse(int a, int n) {
+	public static long modInverse(long a, long n) {
 	    /*
 	    BigInteger ba = new BigInteger(Integer.toString(a));
 	    BigInteger bn = new BigInteger(Integer.toString(n));
@@ -108,9 +109,9 @@ public class Util {
 	    
 	    return mi.intValue();
 	    */
-		int i = n, v = 0, d = 1;
+		long i = n, v = 0, d = 1;
 		while (a > 0) {
-			int t = i / a, x = a;
+			long t = i / a, x = a;
 			a = i % x;
 			i = x;
 			x = d;
@@ -123,21 +124,21 @@ public class Util {
 		return v;
 	}
 
-    public static int[] toByteArray(String message) {
+    public static long[] toByteArray(String message) {
         ByteBuffer buffer = ByteBuffer.wrap(message.getBytes());
-        return IntStream.generate(buffer::get).limit(buffer.remaining()).toArray();
+        return LongStream.generate(buffer::get).limit(buffer.remaining()).toArray();
     }
 
-    public static String toString(int[] message) {
+    public static String toString(long[] message) {
         return Arrays.stream(message)
                 .mapToObj(i -> (char) i)
                 .reduce(new StringBuilder(), (sb, c) -> sb.append(c), StringBuilder::append)
                 .toString();
     }
 	
-	public static int random(int n) {
+	public static long random(long n) {
 		if (random == null)
 			random = new Random();
-		return random.nextInt(n);		
+		return (long)(random.nextDouble() * n);		
 	}
 }

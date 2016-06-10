@@ -16,19 +16,19 @@ public class TestSuite<T extends Coursework> {
 	public static String TEST_FILE = "test.txt";
 
 	private List<TestCase<?>> tests;
-	private transient String file;
+	private transient static String file;
 
 	public boolean evaluate(String input, Class<?> irrelevant) {
-		return tests.parallelStream().filter(t -> !Objects.equal(t.getClass(), equals(irrelevant)))
+		return tests.stream().filter(t -> !Objects.equal(t.getClass(), equals(irrelevant)))
 				.allMatch(t -> t.evaluate(input) > 0);
 	}
 
 	public boolean evaluate(String input) {
-		return tests.parallelStream().allMatch(t -> t.evaluate(input) > 0);
+		return tests.stream().map(t -> t.evaluate(input)).filter(r -> r == 0).count() == 0;
 	}
 
 	public TestSuite(String path) {
-		this.file = path + File.separator + TEST_FILE;
+		file = path + File.separator + TEST_FILE;
 		this.tests = new ArrayList<>();
 		// add test cases
 		tests.add(new BinaryTest("Alice's private key") {
@@ -39,7 +39,7 @@ public class TestSuite<T extends Coursework> {
 
 			@Override
 			public Object actual() {
-				return getObject().getAlice().getD();
+				return getObject().getAlice().getUncomputedD();
 			}
 		});
 		tests.add(new BinaryTest("Bob's private key") {
@@ -50,7 +50,7 @@ public class TestSuite<T extends Coursework> {
 
 			@Override
 			public Object actual() {
-				return getObject().getBob().getD();
+				return getObject().getBob().getUncomputedD();
 			}
 		});
 		tests.add(new BinaryTest("Charlie's private key") {
@@ -61,7 +61,7 @@ public class TestSuite<T extends Coursework> {
 
 			@Override
 			public Object actual() {
-				return getObject().getCharlie().getD();
+				return getObject().getCharlie().getUncomputedD();
 			}
 		});
 		tests.add(new BinaryTest("Encoding") {
@@ -77,10 +77,10 @@ public class TestSuite<T extends Coursework> {
 						.map(m -> m.getEncoded()[2]).orElse(null);
 			}
 		});
-		tests.add(new SetComparisonTest("Encryption / decryption") {
+		tests.add(new SetComparisonTest("Encryption + decryption") {
 			@Override
 			public Object expected() {
-				Set<Integer> result = getEtalon().getCommunication().stream()
+				Set<Long> result = getEtalon().getCommunication().stream()
 						.filter(m -> m.getEncoded() != null && m.getEncoded().length > 0)
 						.map(m -> m.getEncoded()[2]).collect(Collectors.toCollection(TreeSet::new));
 				System.out.println("Etalon: " + result);
@@ -89,7 +89,7 @@ public class TestSuite<T extends Coursework> {
 
 			@Override
 			public Object actual() {
-				Set<Integer> result = getObject().getCommunication().stream()
+				Set<Long> result = getObject().getCommunication().stream()
 						.filter(m -> m.getEncoded() != null && m.getEncoded().length > 0)
 						.map(m -> m.getEncoded()[2]).collect(Collectors.toCollection(TreeSet::new));
 				System.out.println("Actual: " + result);
@@ -105,8 +105,8 @@ public class TestSuite<T extends Coursework> {
 
 	}
 
-	public String getFile() {
-		return this.file;
+	public static String getFile() {
+		return file;
 	}
 
 }

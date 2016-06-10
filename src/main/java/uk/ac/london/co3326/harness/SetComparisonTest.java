@@ -11,6 +11,14 @@ public abstract class SetComparisonTest extends BinaryTest {
 	}
 	
 	@Override
+    protected void init(String input) {
+	    super.init(input);
+        if (object.getAlice().getUncomputedD() == 0 || object.getBob().getUncomputedD() == 0
+                || object.getCharlie().getUncomputedD() == 0)
+            throw new RuntimeException("Private key not computed");         
+    }
+	
+	@Override
 	public int evaluate(String input) {
 		try {
 		    init(input);

@@ -28,7 +28,7 @@ public class Cw1 implements Coursework {
     	    charlie = new User("charlie");
     	return charlie;
     }
-
+    
     @Override
     public void demonstrate() {
         if (communication == null || communication.isEmpty()) {
@@ -38,7 +38,7 @@ public class Cw1 implements Coursework {
         String message = communication.remove(0).getText();
         communication.clear();
         communication.add(new Message(message, Util.toByteArray(message)));
-        int[] cipher = getAlice().send(getCharlie(), message);
+        long[] cipher = getAlice().send(getCharlie(), message);
         communication.add(new Message(cipher));
         String intercepted = getCharlie().intercept(getAlice(), cipher);
         communication.add(new Message(intercepted, Util.toByteArray(intercepted)));
