@@ -17,7 +17,7 @@ public class TestSuite<T extends Coursework> {
 
 	private List<TestCase<?>> tests;
 	private transient static String file;
-
+	
 	public boolean evaluate(String input, Class<?> irrelevant) {
 		return tests.stream().filter(t -> !Objects.equal(t.getClass(), equals(irrelevant)))
 				.allMatch(t -> t.evaluate(input) > 0);

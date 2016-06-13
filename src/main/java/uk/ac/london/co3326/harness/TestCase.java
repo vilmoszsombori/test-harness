@@ -15,7 +15,10 @@ public abstract class TestCase<T extends Coursework> {
     protected abstract void init(String input);
 	public abstract int evaluate(String input);
 	
-	public TestCase() {}
+	@SuppressWarnings("unchecked")
+    public TestCase() {
+	    etalon = (T) Harness.<T>i().getEtalon();
+	}
 		
 	public int getScore() {
 		return score;

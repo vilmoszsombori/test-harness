@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Rsa {
 
-    public static final int MAX = 1024;
+    public static final int MAX = 2048;
     private static List<Long> primes = Util.sieve(MAX);
     
     private long p = 0;

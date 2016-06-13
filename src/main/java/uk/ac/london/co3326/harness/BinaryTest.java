@@ -1,9 +1,5 @@
 package uk.ac.london.co3326.harness;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-
 import com.google.common.base.Objects;
 
 import uk.ac.london.co3326.Cw1;
@@ -11,22 +7,8 @@ import uk.ac.london.co3326.Cw1;
 public abstract class BinaryTest extends TestCase<Cw1> {
 
 	public BinaryTest(String description) {
+	    super();
 		setDescription(description);
-		// set up the etalon
-        try (BufferedReader in = new BufferedReader(new FileReader(TestSuite.getFile()))) {
-            String line;
-            while ((line = in.readLine()) != null) {
-                try {
-                    // convert the JSON string back to object
-                    etalon = gson.fromJson(line, Cw1.class);
-                    etalon.demonstrate();
-                } catch (Exception e) {
-                    System.err.println(e.getMessage());
-                }
-            }
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }		
 	}
 
     @Override	
