@@ -6,8 +6,8 @@ import uk.ac.london.co3326.Cw1;
 
 public abstract class UnaryTest extends TestCase<Cw1> {
 
-    public UnaryTest(String description) {
-        setDescription(description);
+    public UnaryTest(String description, Cw1 etalon) {
+        super(description, etalon);
     }
 
     @Override

@@ -4,10 +4,12 @@ import java.util.Set;
 
 import com.google.common.collect.Sets;
 
+import uk.ac.london.co3326.Cw1;
+
 public abstract class SetComparisonTest extends BinaryTest {
 	
-	public SetComparisonTest(String description) {
-		super(description);
+	public SetComparisonTest(String description, Cw1 etalon) {
+	    super(description, etalon);
 	}
 	
 	@Override

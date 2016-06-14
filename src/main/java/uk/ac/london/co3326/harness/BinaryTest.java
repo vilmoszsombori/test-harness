@@ -6,9 +6,8 @@ import uk.ac.london.co3326.Cw1;
 
 public abstract class BinaryTest extends TestCase<Cw1> {
 
-	public BinaryTest(String description) {
-	    super();
-		setDescription(description);
+	public BinaryTest(String description, Cw1 etalon) {
+	    super(description, etalon);
 	}
 
     @Override	

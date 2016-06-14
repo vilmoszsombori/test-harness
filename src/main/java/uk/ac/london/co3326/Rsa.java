@@ -8,13 +8,13 @@ public class Rsa {
     public static final int MAX = 2048;
     private static List<Long> primes = Util.sieve(MAX);
     
-    private long p = 0;
-    private long q = 0;
-    private long e = 0;
+    public long p = 0;
+    public long q = 0;
+    public long e = 0;
 
-    private long n = 0;
-    private long r = 0;
-    private long d = 0;
+    public long n = 0;
+    public long r = 0;
+    public long d = 0;
 
     public Rsa() {
     }

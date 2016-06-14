@@ -11,22 +11,20 @@ import java.util.stream.Collectors;
 import uk.ac.london.co3326.Coursework;
 
 public class Student<T extends Coursework> {
-	private transient String path;
+	private transient String[] arg;
 	private String file;
 	private String name;
 	private String camelCase;
 	private String srnFromFile;
 	private String srnFromRun;
-	private TestSuite<T> testSuite;
+	private TestSuite<?> test1, test2;
 	private String stdout;
 	private String stderr;
 	private String exception;
 
-	public Student(String file) {
-		this.file = file;
-		this.path = file.substring(0, file.lastIndexOf(File.separatorChar));
-		this.file = file.substring(file.lastIndexOf(File.separatorChar) + 1);
-		this.testSuite = new TestSuite<>(path);
+	public Student(String jarFile, String testFile) {
+		arg = new String[] { "java", "-jar", jarFile, testFile};
+		this.file = jarFile.substring(jarFile.lastIndexOf(File.separatorChar) + 1);
 		String[] temp = this.file.split("_");
 		if (temp.length > 0)
 			name = temp[0];
@@ -41,7 +39,6 @@ public class Student<T extends Coursework> {
 	}
 		
 	public void evaluate() {
-		String[] arg = new String[] { "java", "-jar", (path + File.separatorChar + file) , TestSuite.getFile()};
 		StringBuilder stderr = new StringBuilder();
 		List<String> stdout = new ArrayList<>();
 		boolean result = false;
@@ -70,7 +67,10 @@ public class Student<T extends Coursework> {
 				throw new Exception("Unexpected output format");
 			if (stdout.get(2) == null || stdout.isEmpty())
                 throw new Exception("Line 3 is null or empty");
-			result = testSuite.evaluate(stdout.get(2));
+			//this.test1 = new FullySpecifiedTestSuite(stdout.get(2), Harness.getTestInput().get(0));
+			//result = test1.evaluate();
+			this.test2 = new EmptyTestSuite(stdout.get(3), null);
+			result = result && test2.evaluate();
 			if (result)
 			    this.stdout = null;
 		} catch (Exception e) {
