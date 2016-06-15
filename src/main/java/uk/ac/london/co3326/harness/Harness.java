@@ -21,9 +21,6 @@ import org.apache.commons.cli.ParseException;
 
 import com.google.gson.Gson;
 
-import uk.ac.london.co3326.Coursework;
-import uk.ac.london.co3326.Cw1;
-
 public class Harness {
 	
 	public static String TEST_FILE = "test.txt";
@@ -32,7 +29,7 @@ public class Harness {
     private transient String testFile;
     private static transient List<String> testInput;
 
-    private List<Student<? extends Coursework>> results = new ArrayList<>();
+    private List<Student> results = new ArrayList<>();
 	
 	public static void main(String[] args) throws IOException {		
 		Options options = new Options();
@@ -92,12 +89,12 @@ public class Harness {
 	}
 	
 	private void test(String path) {
-        Student<Cw1> student = new Student<>(path, getTestFile());
+        Student student = new Student(path, getTestFile());
         student.evaluate();
         results.add(student);        
 	}
 	
-	public List<Student<?>> getResults() {
+	public List<Student> getResults() {
 		return this.results;
 	}
 	

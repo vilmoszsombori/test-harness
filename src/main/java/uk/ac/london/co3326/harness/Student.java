@@ -8,16 +8,16 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import uk.ac.london.co3326.Coursework;
-
-public class Student<T extends Coursework> {
+public class Student {
 	private transient String[] arg;
 	private String file;
 	private String name;
 	private String camelCase;
 	private String srnFromFile;
 	private String srnFromRun;
-	private TestSuite<?> test1, test2;
+	private int score = 0;
+	private List<? extends TestResult> tests;
+	private String out1, out2;
 	private String stdout;
 	private String stderr;
 	private String exception;
@@ -25,6 +25,7 @@ public class Student<T extends Coursework> {
 	public Student(String jarFile, String testFile) {
 		arg = new String[] { "java", "-jar", jarFile, testFile};
 		this.file = jarFile.substring(jarFile.lastIndexOf(File.separatorChar) + 1);
+		this.tests = new ArrayList<>();
 		String[] temp = this.file.split("_");
 		if (temp.length > 0)
 			name = temp[0];
@@ -41,7 +42,7 @@ public class Student<T extends Coursework> {
 	public void evaluate() {
 		StringBuilder stderr = new StringBuilder();
 		List<String> stdout = new ArrayList<>();
-		boolean result = false;
+		int r;
 		try {
 			Process p = Runtime.getRuntime().exec(arg);
 			p.waitFor(10, TimeUnit.SECONDS);
@@ -53,7 +54,7 @@ public class Student<T extends Coursework> {
 			    }
 			}
 			reader.close();
-			this.stdout = stdout.stream().collect(Collectors.joining("\n"));
+			//this.stdout = stdout.stream().collect(Collectors.joining("\n"));
 			reader = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 			while ((line = reader.readLine()) != null) {
 				stderr.append(line);
@@ -67,12 +68,30 @@ public class Student<T extends Coursework> {
 				throw new Exception("Unexpected output format");
 			if (stdout.get(2) == null || stdout.isEmpty())
                 throw new Exception("Line 3 is null or empty");
-			//this.test1 = new FullySpecifiedTestSuite(stdout.get(2), Harness.getTestInput().get(0));
-			//result = test1.evaluate();
-			this.test2 = new EmptyTestSuite(stdout.get(2), null);
-			result = test2.evaluate();
-			if (result)
-			    this.stdout = null;
+            if (stdout.get(3) == null || stdout.isEmpty())
+                throw new Exception("Line 4 is null or empty");
+			
+            TestSuite test1 = new FullySpecifiedTestSuite(stdout.get(2), Harness.getTestInput().get(0));
+			r = test1.evaluate();
+			addScore(r);
+			if (r == 0)
+			    setOut1(stdout.get(2));
+			
+            this.tests.addAll(test1.getResult());
+			System.out.println(test1.getResult());
+
+			TestSuite test2 = new EmptyTestSuite(stdout.get(3), null);
+            r = test2.evaluate();
+            addScore(r);
+            if (r == 0)
+                setOut2(stdout.get(3));
+
+            System.out.println(test2.getResult());
+            this.tests.addAll(test2.getResult());
+            
+            if (getScore() == 0) {
+                this.stdout = stdout.stream().collect(Collectors.joining("\n"));
+            }
 		} catch (Exception e) {
 			setError(e.getMessage(), stdout.stream().collect(Collectors.joining("\n")), stderr.toString());
 		} 			
@@ -127,4 +146,32 @@ public class Student<T extends Coursework> {
 	public String getException() {
 		return exception;
 	}
+
+    public String getOut1() {
+        return out1;
+    }
+
+    public void setOut1(String out1) {
+        this.out1 = out1;
+    }
+
+    public String getOut2() {
+        return out2;
+    }
+
+    public void setOut2(String out2) {
+        this.out2 = out2;
+    }
+    
+    public int getScore() {
+        return this.score;
+    }
+    
+    public void setScore(int score) {
+        this.score = score;
+    }
+    
+    public void addScore(int score) {
+        this.score += score;
+    }
 }

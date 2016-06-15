@@ -12,7 +12,6 @@ public abstract class BinaryTest extends TestCase<Cw1> {
 
     @Override	
     protected void init(String input) {
-        // actual
         object = gson.fromJson(input, Cw1.class);
         if (object.getAlice() == null || object.getAlice().getRsa() == null
                 || object.getBob() == null || object.getBob().getRsa() == null
