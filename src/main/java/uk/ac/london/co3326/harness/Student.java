@@ -42,7 +42,6 @@ public class Student {
 	public void evaluate() {
 		StringBuilder stderr = new StringBuilder();
 		List<String> stdout = new ArrayList<>();
-		int r;
 		try {
 			Process p = Runtime.getRuntime().exec(arg);
 			p.waitFor(10, TimeUnit.SECONDS);
@@ -72,24 +71,24 @@ public class Student {
                 throw new Exception("Line 4 is null or empty");
 			
             TestSuite test1 = new FullySpecifiedTestSuite(stdout.get(2), Harness.getTestInput().get(0));
-			r = test1.evaluate();
-			addScore(r);
-			if (r == 0)
+			int r1 = test1.evaluate();
+			addScore(r1);
+			if (r1 == 0)
 			    setOut1(stdout.get(2));
 			
             this.tests.addAll(test1.getResult());
 			System.out.println(test1.getResult());
 
 			TestSuite test2 = new EmptyTestSuite(stdout.get(3), null);
-            r = test2.evaluate();
-            addScore(r);
-            if (r == 0)
+            int r2 = test2.evaluate();
+            addScore(r2);
+            if (r2 == 0)
                 setOut2(stdout.get(3));
 
             System.out.println(test2.getResult());
             this.tests.addAll(test2.getResult());
             
-            if (getScore() == 0) {
+            if (r1 * r2 == 0) {
                 this.stdout = stdout.stream().collect(Collectors.joining("\n"));
             }
 		} catch (Exception e) {
