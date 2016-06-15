@@ -1,5 +1,6 @@
 package uk.ac.london.co3326;
 
+import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,9 +11,17 @@ import java.util.stream.LongStream;
 public class Util {
 	private static Random random = null;
 
-	public static boolean isPrime(long n) {
+	public static boolean isPrime(long p) {
+    	BigInteger n = new BigInteger(Long.toString(p));
+        for (BigInteger i = BigInteger.valueOf(2); i.compareTo(n) < 0; i = i.add(BigInteger.ONE)) {
+            if (n.mod(i).equals(BigInteger.ZERO)) {
+                return false;
+            }
+        }
+        return true;
+		/*
 		// initially assume all integers are prime
-		List<Boolean> isPrime = new ArrayList<>();
+		List<Boolean> isPrime = new ArrayList<>((int)n+1);
 		for (int i = 2; i <= n; i++) {
 			isPrime.set(i, true);
 		}
@@ -32,6 +41,7 @@ public class Util {
 		}
 
 		return isPrime.get((int)n);
+		*/
 	}
 
 	public static List<Long> sieve(long max) {

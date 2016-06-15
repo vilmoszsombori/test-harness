@@ -9,7 +9,7 @@ public abstract class UnaryTest extends TestCase<Cw1> {
     public UnaryTest(String description, Cw1 etalon) {
         super(description, etalon);
     }
-
+    
     @Override
     protected void init(String input) {
         Gson gson = new Gson();

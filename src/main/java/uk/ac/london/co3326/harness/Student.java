@@ -69,8 +69,8 @@ public class Student<T extends Coursework> {
                 throw new Exception("Line 3 is null or empty");
 			//this.test1 = new FullySpecifiedTestSuite(stdout.get(2), Harness.getTestInput().get(0));
 			//result = test1.evaluate();
-			this.test2 = new EmptyTestSuite(stdout.get(3), null);
-			result = result && test2.evaluate();
+			this.test2 = new EmptyTestSuite(stdout.get(2), null);
+			result = test2.evaluate();
 			if (result)
 			    this.stdout = null;
 		} catch (Exception e) {
