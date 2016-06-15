@@ -6,8 +6,8 @@ import uk.ac.london.co3326.Cw1;
 
 public abstract class UnaryTest extends TestCase<Cw1> {
 
-    public UnaryTest(String description, Cw1 etalon) {
-        super(description, etalon);
+    public UnaryTest(String description, int weight, Cw1 etalon) {
+        super(description, weight, etalon);
     }
     
     @Override
@@ -24,12 +24,12 @@ public abstract class UnaryTest extends TestCase<Cw1> {
     public int evaluate(String input) {
         try {
             init(input);
-            setScore(pass() ? 1 : 0);
+            setScore(getWeight() * pass());
         } catch (Exception e) {
             setError(e.getMessage());
         }
         return getScore();
     }
 
-    public abstract boolean pass();
+    public abstract int pass();
 }

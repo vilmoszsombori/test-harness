@@ -86,7 +86,7 @@ public class User {
         long[] message = (getN() > user.getN()) ? 
                 Rsa.crypt(Rsa.crypt(cipher, getD(), getN()), user.getE(), user.getN()) :
                 Rsa.crypt(Rsa.crypt(cipher, user.getE(), user.getN()), getD(), getN());
-        return Util.toString(message) + " :: longercepted";
+        return Util.toString(message) + " :: intercepted";
     }
     
     public Rsa getRsa() {

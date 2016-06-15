@@ -49,7 +49,7 @@ public class Student {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			String line = null;
 			while ((line = reader.readLine()) != null) {
-			    if (!line.trim().isEmpty() && (stdout.size() < 2 || (stdout.size() >= 2 || line.startsWith("{")))) {
+			    if (line != null && !line.trim().isEmpty() && (stdout.size() < 2 || (stdout.size() >= 2 || line.startsWith("{")))) {
 			        stdout.add(line);
 			    }
 			}
@@ -64,7 +64,7 @@ public class Student {
 			this.stderr = stderr.toString();
             this.camelCase = stdout.get(0);
             this.srnFromRun = stdout.get(1);
-			if (stdout.size() < 3)
+			if (stdout.size() < 4)
 				throw new Exception("Unexpected output format");
 			if (stdout.get(2) == null || stdout.isEmpty())
                 throw new Exception("Line 3 is null or empty");

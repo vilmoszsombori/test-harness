@@ -103,7 +103,8 @@ public class Harness {
         try (BufferedReader in = new BufferedReader(new FileReader(getTestFile()))) {
             String line;
             while ((line = in.readLine()) != null) {
-            	testInput.add(line);
+                if (line != null && !line.trim().isEmpty())
+                    testInput.add(line);
             }
         }		
 	}

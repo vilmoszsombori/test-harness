@@ -30,9 +30,12 @@ public class App {
                 try {
                     // convert the JSON string back to object
                     Cw1 cw = gson.fromJson(line, Cw1.class);
-                    cw.demonstrate();
-                    System.out.println(gson.toJson(cw));
+                    if (cw != null) {
+                        cw.demonstrate();
+                        System.out.println(gson.toJson(cw));
+                    }
                 } catch (Exception e) {
+                    e.printStackTrace();
                     System.err.println(e.getMessage());
                 }
             }

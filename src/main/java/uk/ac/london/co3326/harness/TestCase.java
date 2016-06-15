@@ -12,8 +12,8 @@ public abstract class TestCase<T extends Coursework> extends TestResult {
     protected abstract void init(String input);
 	public abstract int evaluate(String input);
 	
-    public TestCase(String description, T etalon) {
-        super(description);
+    public TestCase(String description, int weight, T etalon) {
+        super(description, weight);
 		this.etalon = etalon;
 	}
 			

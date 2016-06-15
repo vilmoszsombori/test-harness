@@ -21,7 +21,7 @@ public class FullySpecifiedTestSuite extends TestSuite<Cw1> {
         }
         
         // add test cases
-		tests.add(new BinaryTest("Alice's private key", etalon) {
+		tests.add(new BinaryTest("Alice's private key", 1, etalon) {
 			@Override
 			public Object expected() {
 				return getEtalon().getAlice().getD();
@@ -32,7 +32,7 @@ public class FullySpecifiedTestSuite extends TestSuite<Cw1> {
 				return getObject().getAlice().getRsa().d;
 			}
 		});
-		tests.add(new BinaryTest("Bob's private key", etalon) {
+		tests.add(new BinaryTest("Bob's private key", 1, etalon) {
 			@Override
 			public Object expected() {
 				return getEtalon().getBob().getD();
@@ -43,7 +43,7 @@ public class FullySpecifiedTestSuite extends TestSuite<Cw1> {
 				return getObject().getBob().getUncomputedD();
 			}
 		});
-		tests.add(new BinaryTest("Charlie's private key", etalon) {
+		tests.add(new BinaryTest("Charlie's private key", 1, etalon) {
 			@Override
 			public Object expected() {
 				return getEtalon().getCharlie().getD();
@@ -54,7 +54,7 @@ public class FullySpecifiedTestSuite extends TestSuite<Cw1> {
 				return getObject().getCharlie().getUncomputedD();
 			}
 		});
-		tests.add(new BinaryTest("Encoding", etalon) {
+		tests.add(new BinaryTest("Encoding", 1, etalon) {
 			@Override
 			public Object expected() {
 				return getEtalon().getCommunication().get(0).getEncoded()[0];
@@ -67,13 +67,12 @@ public class FullySpecifiedTestSuite extends TestSuite<Cw1> {
 						.map(m -> m.getEncoded()[0]).orElse(null);
 			}
 		});
-		tests.add(new SetComparisonTest("Encryption + decryption", etalon) {
+		tests.add(new SetComparisonTest("Encryption + decryption", 1, etalon) {
 			@Override
 			public Object expected() {
 				Set<Long> result = getEtalon().getCommunication().stream()
 						.filter(m -> m.getEncoded() != null && m.getEncoded().length > 0)
 						.map(m -> m.getEncoded()[0]).collect(Collectors.toCollection(TreeSet::new));
-				System.out.println("Etalon: " + result);
 				return result;
 			}
 
@@ -82,7 +81,6 @@ public class FullySpecifiedTestSuite extends TestSuite<Cw1> {
 				Set<Long> result = getObject().getCommunication().stream()
 						.filter(m -> m.getEncoded() != null && m.getEncoded().length > 0)
 						.map(m -> m.getEncoded()[0]).collect(Collectors.toCollection(TreeSet::new));
-				System.out.println("Actual: " + result);
 				return result;
 			}
 		});

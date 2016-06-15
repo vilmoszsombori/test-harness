@@ -8,8 +8,8 @@ import uk.ac.london.co3326.Cw1;
 
 public abstract class SetComparisonTest extends BinaryTest {
 	
-	public SetComparisonTest(String description, Cw1 etalon) {
-	    super(description, etalon);
+	public SetComparisonTest(String description, int weight, Cw1 etalon) {
+	    super(description, weight, etalon);
 	}
 	
 	@Override
@@ -25,7 +25,7 @@ public abstract class SetComparisonTest extends BinaryTest {
 		try {
 		    init(input);
 		    Set<?> intersect = Sets.intersection((Set<?>)expected(), (Set<?>)actual());
-			setScore(intersect.size() - 1);
+			setScore(getWeight() * (intersect.size() - 1));
 			if (getScore() == 0) {
 				setError(String.format("Missmatch: expected=%s, actual=%s", expected(), actual()));
 			}
