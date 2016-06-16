@@ -54,7 +54,7 @@ public class Harness {
             if (file.isFile()) {
                 if (!file.toString().toLowerCase().endsWith(".jar"))
                     throw new ParseException(String.format("[%s] is invalid. A JAR file is expected.", path));
-                harness.setPath(file.getAbsolutePath().toString());
+                harness.setPath(file.getParent().toString());
                 harness.initTestInput();
                 harness.test(path);
             } else if(file.isDirectory()) {
@@ -89,6 +89,7 @@ public class Harness {
 	}
 	
 	private void test(String path) {
+		System.out.println(path);
         Student student = new Student(path, getTestFile());
         student.evaluate();
         results.add(student);        

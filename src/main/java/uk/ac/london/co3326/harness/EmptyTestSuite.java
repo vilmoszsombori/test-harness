@@ -14,7 +14,7 @@ public class EmptyTestSuite extends TestSuite<Cw1> {
     public EmptyTestSuite(String input, String testInput) throws ClassNotFoundException {
         super(input, testInput);
 
-        tests.add(new UnaryTest("p is prime", 1, null) {
+        tests.add(new UnaryTest("p is prime", 2, null) {
             @Override
             public int pass() {
                 boolean result = Util.isPrime(getObject().getAlice().getRsa().p);
@@ -22,7 +22,7 @@ public class EmptyTestSuite extends TestSuite<Cw1> {
             }
         });
 
-        tests.add(new UnaryTest("q is prime", 1, null) {
+        tests.add(new UnaryTest("q is prime", 2, null) {
             @Override
             public int pass() {
                 boolean result = Util.isPrime(getObject().getAlice().getRsa().q);
@@ -49,7 +49,7 @@ public class EmptyTestSuite extends TestSuite<Cw1> {
             }
         });
 
-        tests.add(new BinaryTest("gcd(e, r) = 1", 1, null) {
+        tests.add(new BinaryTest("gcd(e, r) = 1", 2, null) {
             @Override
             public Object expected() {
                 return 1L;
@@ -62,7 +62,7 @@ public class EmptyTestSuite extends TestSuite<Cw1> {
             }
         });
 
-        tests.add(new BinaryTest("d = modInv(e, r)", 1, null) {
+        tests.add(new BinaryTest("d = modInv(e, r)", 2, null) {
             @Override
             public Object expected() {
                 return Util.modInverse(getObject().getAlice().getRsa().e,
@@ -75,7 +75,7 @@ public class EmptyTestSuite extends TestSuite<Cw1> {
             }
         });
 
-        tests.add(new UnaryTest("RSA text", 1, null) {
+        tests.add(new UnaryTest("RSA text", 5, null) {
             @Override
             public int pass() {
                 if (getObject().getCommunication() == null
@@ -87,9 +87,7 @@ public class EmptyTestSuite extends TestSuite<Cw1> {
                         .map(m -> m.getText()).filter(m -> m != null)
                         .collect(Collectors.toCollection(TreeSet::new));
                 int occurence = communication.stream().mapToInt(
-                        m -> m.trim().startsWith(etalon) && m.length() > etalon.length() ? 1 : 0)
-                        .sum();
-                System.out.println(occurence + " --> " + communication);
+                        m -> m.trim().startsWith(etalon) && m.length() > etalon.length() ? 1 : 0).sum();
                 return Math.min(occurence, 2);
             }
         });
@@ -101,7 +99,7 @@ public class EmptyTestSuite extends TestSuite<Cw1> {
             if (etalon != null) {
                 etalon.demonstrate();
 
-                tests.add(new SetComparisonTest("Encryption + decryption", 1, etalon) {
+                tests.add(new SetComparisonTest("Encryption + decryption", 5, etalon) {
                     @Override
                     public Object expected() {
                         Set<Long> result =

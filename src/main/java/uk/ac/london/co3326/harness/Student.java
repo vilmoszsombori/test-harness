@@ -17,7 +17,7 @@ public class Student {
 	private String srnFromRun;
 	private int score = 0;
 	private List<? extends TestResult> tests;
-	private String out1, out2;
+	private String out1, out2, out3;
 	private String stdout;
 	private String stderr;
 	private String exception;
@@ -63,12 +63,14 @@ public class Student {
 			this.stderr = stderr.toString();
             this.camelCase = stdout.get(0);
             this.srnFromRun = stdout.get(1);
-			if (stdout.size() < 4)
+			if (stdout.size() < 5)
 				throw new Exception("Unexpected output format");
 			if (stdout.get(2) == null || stdout.isEmpty())
                 throw new Exception("Line 3 is null or empty");
             if (stdout.get(3) == null || stdout.isEmpty())
                 throw new Exception("Line 4 is null or empty");
+            if (stdout.get(4) == null || stdout.isEmpty())
+                throw new Exception("Line 5 is null or empty");
 			
             TestSuite test1 = new FullySpecifiedTestSuite(stdout.get(2), Harness.getTestInput().get(0));
 			int r1 = test1.evaluate();
@@ -79,16 +81,25 @@ public class Student {
             this.tests.addAll(test1.getResult());
 			System.out.println(test1.getResult());
 
-			TestSuite test2 = new EmptyTestSuite(stdout.get(3), null);
-            int r2 = test2.evaluate();
-            addScore(r2);
-            if (r2 == 0)
-                setOut2(stdout.get(3));
-
-            System.out.println(test2.getResult());
+            TestSuite test2 = new FullySpecifiedTestSuite(stdout.get(3), Harness.getTestInput().get(1));
+			int r2 = test1.evaluate();
+			addScore(r2);
+			if (r2 == 0)
+			    setOut2(stdout.get(3));
+			
             this.tests.addAll(test2.getResult());
+			System.out.println(test2.getResult());
+			
+			TestSuite test3 = new EmptyTestSuite(stdout.get(4), null);
+            int r3 = test3.evaluate();
+            addScore(r3);
+            if (r3 == 0)
+                setOut3(stdout.get(4));
+
+            System.out.println(test3.getResult());
+            this.tests.addAll(test3.getResult());
             
-            if (r1 * r2 == 0) {
+            if (r1 * r2 * r3 == 0) {
                 this.stdout = stdout.stream().collect(Collectors.joining("\n"));
             }
 		} catch (Exception e) {
@@ -160,6 +171,14 @@ public class Student {
 
     public void setOut2(String out2) {
         this.out2 = out2;
+    }
+
+    public String getOut3() {
+        return out3;
+    }
+
+    public void setOut3(String out3) {
+        this.out3 = out3;
     }
     
     public int getScore() {

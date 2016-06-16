@@ -21,7 +21,7 @@ public class FullySpecifiedTestSuite extends TestSuite<Cw1> {
         }
         
         // add test cases
-		tests.add(new BinaryTest("Alice's private key", 1, etalon) {
+		tests.add(new BinaryTest("Alice's private key", 2, etalon) {
 			@Override
 			public Object expected() {
 				return getEtalon().getAlice().getD();
@@ -32,7 +32,7 @@ public class FullySpecifiedTestSuite extends TestSuite<Cw1> {
 				return getObject().getAlice().getRsa().d;
 			}
 		});
-		tests.add(new BinaryTest("Bob's private key", 1, etalon) {
+		tests.add(new BinaryTest("Bob's private key", 2, etalon) {
 			@Override
 			public Object expected() {
 				return getEtalon().getBob().getD();
@@ -43,7 +43,7 @@ public class FullySpecifiedTestSuite extends TestSuite<Cw1> {
 				return getObject().getBob().getUncomputedD();
 			}
 		});
-		tests.add(new BinaryTest("Charlie's private key", 1, etalon) {
+		tests.add(new BinaryTest("Charlie's private key", 2, etalon) {
 			@Override
 			public Object expected() {
 				return getEtalon().getCharlie().getD();
@@ -54,7 +54,7 @@ public class FullySpecifiedTestSuite extends TestSuite<Cw1> {
 				return getObject().getCharlie().getUncomputedD();
 			}
 		});
-		tests.add(new BinaryTest("Encoding", 1, etalon) {
+		tests.add(new BinaryTest("Encoding", 3, etalon) {
 			@Override
 			public Object expected() {
 				return getEtalon().getCommunication().get(0).getEncoded()[0];
@@ -67,7 +67,7 @@ public class FullySpecifiedTestSuite extends TestSuite<Cw1> {
 						.map(m -> m.getEncoded()[0]).orElse(null);
 			}
 		});
-		tests.add(new SetComparisonTest("Encryption + decryption", 1, etalon) {
+		tests.add(new SetComparisonTest("Encryption + decryption", 3, etalon) {
 			@Override
 			public Object expected() {
 				Set<Long> result = getEtalon().getCommunication().stream()
