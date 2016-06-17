@@ -18,6 +18,7 @@ public class EmptyTestSuite extends TestSuite<Cw1> {
             @Override
             public int pass() {
                 boolean result = Util.isPrime(getObject().getAlice().getRsa().p);
+            	setDescription(getObject().getAlice().getRsa().p + (result ? " is " : " is not ") + "prime");
                 return result ? 1 : 0;
             }
         });
@@ -26,6 +27,7 @@ public class EmptyTestSuite extends TestSuite<Cw1> {
             @Override
             public int pass() {
                 boolean result = Util.isPrime(getObject().getAlice().getRsa().q);
+            	setDescription(getObject().getAlice().getRsa().q + (result ? " is " : " is not ") + "prime");
                 return result ? 1 : 0;
             }
         });

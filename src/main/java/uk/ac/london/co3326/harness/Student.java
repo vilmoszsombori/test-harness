@@ -17,7 +17,7 @@ public class Student {
 	private String srnFromRun;
 	private int score = 0;
 	private List<? extends TestResult> tests;
-	private String out1, out2, out3;
+	private String out1, out2, out3, out4;
 	private String stdout;
 	private String stderr;
 	private String exception;
@@ -71,10 +71,12 @@ public class Student {
                 throw new Exception("Line 4 is null or empty");
             if (stdout.get(4) == null || stdout.isEmpty())
                 throw new Exception("Line 5 is null or empty");
+            if (stdout.get(5) == null || stdout.isEmpty())
+                throw new Exception("Line 6 is null or empty");
 			
             TestSuite test1 = new FullySpecifiedTestSuite(stdout.get(2), Harness.getTestInput().get(0));
 			int r1 = test1.evaluate();
-			addScore(r1);
+			addScore(r1/2);
 			if (r1 == 0)
 			    setOut1(stdout.get(2));
 			
@@ -83,7 +85,7 @@ public class Student {
 
             TestSuite test2 = new FullySpecifiedTestSuite(stdout.get(3), Harness.getTestInput().get(1));
 			int r2 = test1.evaluate();
-			addScore(r2);
+			addScore(r2/2);
 			if (r2 == 0)
 			    setOut2(stdout.get(3));
 			
@@ -92,14 +94,23 @@ public class Student {
 			
 			TestSuite test3 = new EmptyTestSuite(stdout.get(4), null);
             int r3 = test3.evaluate();
-            addScore(r3);
+            addScore(r3/2);
             if (r3 == 0)
                 setOut3(stdout.get(4));
 
             System.out.println(test3.getResult());
             this.tests.addAll(test3.getResult());
+
+			TestSuite test4 = new EmptyTestSuite(stdout.get(5), null);
+            int r4 = test4.evaluate();
+            addScore(r4/2);
+            if (r4 == 0)
+                setOut4(stdout.get(5));
+
+            System.out.println(test4.getResult());
+            this.tests.addAll(test4.getResult());
             
-            if (r1 * r2 * r3 == 0) {
+            if (r1 * r2 * r3 * r4 == 0) {
                 this.stdout = stdout.stream().collect(Collectors.joining("\n"));
             }
 		} catch (Exception e) {
@@ -177,10 +188,18 @@ public class Student {
         return out3;
     }
 
+    public void setOut4(String out4) {
+        this.out4 = out4;
+    }
+    
+    public String getOut4() {
+        return out4;
+    }
+
     public void setOut3(String out3) {
         this.out3 = out3;
     }
-    
+
     public int getScore() {
         return this.score;
     }
