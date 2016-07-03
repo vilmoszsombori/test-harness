@@ -1,21 +1,22 @@
-package uk.ac.london.co3326.harness;
+package uk.ac.london.co3326.harness.cw2;
 
 import com.google.common.base.Objects;
 
-import uk.ac.london.co3326.Cw1;
+import uk.ac.london.co3326.Cw2;
+import uk.ac.london.co3326.harness.TestCase;
 
-public abstract class BinaryTest extends TestCase<Cw1> {
+public abstract class BinaryTest extends TestCase<Cw2> {
 
-	public BinaryTest(String description, int weight, Cw1 etalon) {
+	public BinaryTest(String description, int weight, Cw2 etalon) {
 	    super(description, weight, etalon);
 	}
 
     @Override	
     protected void init(String input) {
-        object = gson.fromJson(input, Cw1.class);
-        if (object.getAlice() == null || object.getAlice().getRsa() == null
-                || object.getBob() == null || object.getBob().getRsa() == null
-                || object.getCharlie() == null || object.getCharlie().getRsa() == null)
+        object = gson.fromJson(input, Cw2.class);
+        if (object.getA() == null || object.getA().getRsa() == null
+                || object.getB() == null || object.getB().getRsa() == null
+                || object.getS() == null || object.getS().getRsa() == null)
             throw new RuntimeException("Key is empty");
     }
 	

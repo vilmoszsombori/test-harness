@@ -29,7 +29,7 @@ public class App {
             while ((line = in.readLine()) != null) {
                 try {
                     // convert the JSON string back to object
-                    Cw1 cw = gson.fromJson(line, Cw1.class);
+                    Cw2 cw = gson.fromJson(line, Cw2.class);
                     if (cw != null) {
                         cw.demonstrate();
                         System.out.println(gson.toJson(cw));

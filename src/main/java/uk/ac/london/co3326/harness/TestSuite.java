@@ -3,10 +3,12 @@ package uk.ac.london.co3326.harness;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestSuite<T> {
+import uk.ac.london.co3326.Coursework;
+
+public class TestSuite<T extends Coursework> {
 
 	protected transient T etalon;
-	protected List<TestCase<?>> tests;
+	protected List<TestCase<T>> tests;
 	protected transient String input;
 
 	public int evaluate() {
@@ -18,7 +20,7 @@ public class TestSuite<T> {
 		this.tests = new ArrayList<>();	
 	}
 	
-	public List<? extends TestResult> getResult() {
+	public List<TestResult> getResult() {
 	    List<TestResult> result = new ArrayList<>();
 	    tests.stream().forEach(r -> result.add(new TestResult(r)));
 	    return result;

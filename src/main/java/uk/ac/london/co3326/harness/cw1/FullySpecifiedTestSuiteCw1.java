@@ -1,4 +1,4 @@
-package uk.ac.london.co3326.harness;
+package uk.ac.london.co3326.harness.cw1;
 
 import java.util.Set;
 import java.util.TreeSet;
@@ -7,10 +7,11 @@ import java.util.stream.Collectors;
 import com.google.gson.Gson;
 
 import uk.ac.london.co3326.Cw1;
+import uk.ac.london.co3326.harness.TestSuite;
 
-public class FullySpecifiedTestSuite extends TestSuite<Cw1> {
+public class FullySpecifiedTestSuiteCw1 extends TestSuite<Cw1> {
 
-	public FullySpecifiedTestSuite(String input, String testInput) throws ClassNotFoundException {
+	public FullySpecifiedTestSuiteCw1(String input, String testInput) throws ClassNotFoundException {
 	    super(input, testInput);
 
         // set up the etalon

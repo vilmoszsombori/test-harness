@@ -75,6 +75,10 @@ public class Cw2 implements Coursework {
         phrase = String.format(PHRASE_5, getB().getName(), getB().getNonce(), getA().getName());
         communication.add(getB().encrypt(phrase));        
     }
-
+    
+    public List<Message> getCommunication() {
+    	return this.communication;
+    }
+    
 }
 

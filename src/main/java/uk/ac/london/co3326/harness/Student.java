@@ -8,6 +8,13 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import uk.ac.london.co3326.Cw1;
+import uk.ac.london.co3326.Cw2;
+import uk.ac.london.co3326.harness.cw1.EmptyTestSuiteCw1;
+import uk.ac.london.co3326.harness.cw1.FullySpecifiedTestSuiteCw1;
+import uk.ac.london.co3326.harness.cw2.EmptyTestSuiteCw2;
+import uk.ac.london.co3326.harness.cw2.FullySpecifiedTestSuiteCw2;
+
 public class Student {
 	private transient String[] arg;
 	private String file;
@@ -16,7 +23,7 @@ public class Student {
 	private String srnFromFile;
 	private String srnFromRun;
 	private int score = 0;
-	private List<? extends TestResult> tests;
+	private List<TestResult> tests;
 	private String out1, out2, out3, out4;
 	private String stdout;
 	private String stderr;
@@ -76,48 +83,96 @@ public class Student {
             if (stdout.get(5) == null || stdout.isEmpty())
                 throw new Exception("Line 6 is null or empty");
 			
-            TestSuite test1 = new FullySpecifiedTestSuite(stdout.get(2), Harness.getTestInput().get(0));
-			int r1 = test1.evaluate();
-			//addScore(r1/2);
-			if (r1 == 0)
-			    setOut1(stdout.get(2));
-			
-            this.tests.addAll(test1.getResult());
-			System.out.println(test1.getResult());
-
-            TestSuite test2 = new FullySpecifiedTestSuite(stdout.get(3), Harness.getTestInput().get(1));
-			int r2 = test2.evaluate();
-			addScore(Math.min(r1, r2));
-			if (r2 == 0)
-			    setOut2(stdout.get(3));
-			
-            this.tests.addAll(test2.getResult());
-			System.out.println(test2.getResult());
-			
-			TestSuite test3 = new EmptyTestSuite(stdout.get(4), null);
-            int r3 = test3.evaluate();
-            //addScore(r3/2);
-            if (r3 == 0)
-                setOut3(stdout.get(4));
-
-            System.out.println(test3.getResult());
-            this.tests.addAll(test3.getResult());
-
-			TestSuite test4 = new EmptyTestSuite(stdout.get(5), null);
-            int r4 = test4.evaluate();
-            addScore(Math.min(r3, r4));
-            if (r4 == 0)
-                setOut4(stdout.get(5));
-
-            System.out.println(test4.getResult());
-            this.tests.addAll(test4.getResult());
+            //evalCw1(stdout);
+            evalCw2(stdout);
             
-            if (r1 * r2 * r3 * r4 == 0) {
-                this.stdout = stdout.stream().collect(Collectors.joining("\n"));
-            }
 		} catch (Exception e) {
 			setError(e.getMessage(), stdout.stream().collect(Collectors.joining("\n")), stderr.toString());
 		} 			
+	}
+	
+	protected void evalCw2(List<String> stdout) throws ClassNotFoundException {
+        TestSuite<Cw2> test1 = new FullySpecifiedTestSuiteCw2(stdout.get(2), Harness.getTestInput().get(0));
+		int r1 = test1.evaluate();
+		//addScore(r1/2);
+		if (r1 == 0)
+		    setOut1(stdout.get(2));
+		
+        this.tests.addAll(test1.getResult());
+		System.out.println(test1.getResult());
+
+		TestSuite<Cw2> test2 = new FullySpecifiedTestSuiteCw2(stdout.get(3), Harness.getTestInput().get(1));
+		int r2 = test2.evaluate();
+		addScore(Math.min(r1, r2));
+		if (r2 == 0)
+		    setOut2(stdout.get(3));
+		
+        this.tests.addAll(test2.getResult());
+		System.out.println(test2.getResult());
+		
+		TestSuite<Cw2> test3 = new EmptyTestSuiteCw2(stdout.get(4), null);
+        int r3 = test3.evaluate();
+        //addScore(r3/2);
+        if (r3 == 0)
+            setOut3(stdout.get(4));
+
+        System.out.println(test3.getResult());
+        this.tests.addAll(test3.getResult());
+
+        TestSuite<Cw2> test4 = new EmptyTestSuiteCw2(stdout.get(5), null);
+        int r4 = test4.evaluate();
+        addScore(Math.min(r3, r4));
+        if (r4 == 0)
+            setOut4(stdout.get(5));
+
+        System.out.println(test4.getResult());
+        this.tests.addAll(test4.getResult());
+        
+        if (r1 * r2 * r3 * r4 == 0) {
+            this.stdout = stdout.stream().collect(Collectors.joining("\n"));
+        }
+    }
+	
+	protected void evalCw1(List<String> stdout) throws ClassNotFoundException {
+        TestSuite<Cw1> test1 = new FullySpecifiedTestSuiteCw1(stdout.get(2), Harness.getTestInput().get(0));
+		int r1 = test1.evaluate();
+		//addScore(r1/2);
+		if (r1 == 0)
+		    setOut1(stdout.get(2));
+		
+        this.tests.addAll(test1.getResult());
+		System.out.println(test1.getResult());
+
+		TestSuite<Cw1> test2 = new FullySpecifiedTestSuiteCw1(stdout.get(3), Harness.getTestInput().get(1));
+		int r2 = test2.evaluate();
+		addScore(Math.min(r1, r2));
+		if (r2 == 0)
+		    setOut2(stdout.get(3));
+		
+        this.tests.addAll(test2.getResult());
+		System.out.println(test2.getResult());
+		
+		TestSuite<Cw1> test3 = new EmptyTestSuiteCw1(stdout.get(4), null);
+        int r3 = test3.evaluate();
+        //addScore(r3/2);
+        if (r3 == 0)
+            setOut3(stdout.get(4));
+
+        System.out.println(test3.getResult());
+        this.tests.addAll(test3.getResult());
+
+        TestSuite<Cw1> test4 = new EmptyTestSuiteCw1(stdout.get(5), null);
+        int r4 = test4.evaluate();
+        addScore(Math.min(r3, r4));
+        if (r4 == 0)
+            setOut4(stdout.get(5));
+
+        System.out.println(test4.getResult());
+        this.tests.addAll(test4.getResult());
+        
+        if (r1 * r2 * r3 * r4 == 0) {
+            this.stdout = stdout.stream().collect(Collectors.joining("\n"));
+        }		
 	}
 	
 	public void setError(String exception, String stdout, String stderr) {

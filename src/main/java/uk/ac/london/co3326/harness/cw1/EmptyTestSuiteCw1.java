@@ -1,4 +1,4 @@
-package uk.ac.london.co3326.harness;
+package uk.ac.london.co3326.harness.cw1;
 
 import java.util.Set;
 import java.util.TreeSet;
@@ -8,10 +8,11 @@ import com.google.gson.Gson;
 
 import uk.ac.london.co3326.Cw1;
 import uk.ac.london.co3326.Util;
+import uk.ac.london.co3326.harness.TestSuite;
 
-public class EmptyTestSuite extends TestSuite<Cw1> {
+public class EmptyTestSuiteCw1 extends TestSuite<Cw1> {
 
-    public EmptyTestSuite(String input, String testInput) throws ClassNotFoundException {
+    public EmptyTestSuiteCw1(String input, String testInput) throws ClassNotFoundException {
         super(input, testInput);
 
         tests.add(new UnaryTest("p is prime", 2, null) {
