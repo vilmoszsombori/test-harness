@@ -5,7 +5,7 @@ import java.util.Random;
 public class User {
 
     private Rsa rsa;
-    private Integer nonce;
+    private Long nonce;
     private transient String name;
     
     public User(String name) {
@@ -37,10 +37,10 @@ public class User {
         return rsa.getD();
     }
     
-    public Integer getNonce() {
+    public Long getNonce() {
         if (nonce == null) {
             Random random = new Random();
-            nonce = random.nextInt(Integer.MAX_VALUE);
+            nonce = new Long(random.nextInt(Integer.MAX_VALUE / 10000));
         }
         return nonce;
     }

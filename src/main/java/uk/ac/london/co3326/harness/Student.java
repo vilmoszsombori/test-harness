@@ -3,13 +3,12 @@ package uk.ac.london.co3326.harness;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import uk.ac.london.co3326.Cw1;
-import uk.ac.london.co3326.Cw2;
 import uk.ac.london.co3326.harness.cw1.EmptyTestSuiteCw1;
 import uk.ac.london.co3326.harness.cw1.FullySpecifiedTestSuiteCw1;
 import uk.ac.london.co3326.harness.cw2.EmptyTestSuiteCw2;
@@ -24,10 +23,10 @@ public class Student {
 	private String srnFromRun;
 	private int score = 0;
 	private List<TestResult> tests;
-	private String out1, out2, out3, out4;
+	private List<String> out = new ArrayList<>();
 	private String stdout;
 	private String stderr;
-	private String exception;
+	private String exception = "";
 
 	public Student(String jarFile, String testFile) {
 		arg = new String[] { "java", "-jar", jarFile, testFile};
@@ -55,7 +54,8 @@ public class Student {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			String line = null;
 			while ((line = reader.readLine()) != null) {
-			    if (line != null && !line.trim().isEmpty() && (stdout.size() < 2 || (stdout.size() >= 2 || line.startsWith("{")))) {
+			    if (line != null && !line.trim().isEmpty() && (stdout.size() < 2 || (stdout.size() >= 2 || line.trim().startsWith("{")))) {
+			    	System.out.println(line);
 			        stdout.add(line);
 			    }
 			}
@@ -70,19 +70,13 @@ public class Student {
 			}
 			reader.close();
 			this.stderr = stderr.toString();
+
+			if (stdout.size() < 2)
+				throw new Exception("Unexpected output format");
+			
             this.camelCase = stdout.get(0);
             this.srnFromRun = stdout.get(1);
-			if (stdout.size() < 5)
-				throw new Exception("Unexpected output format");
-			if (stdout.get(2) == null || stdout.isEmpty())
-                throw new Exception("Line 3 is null or empty");
-            if (stdout.get(3) == null || stdout.isEmpty())
-                throw new Exception("Line 4 is null or empty");
-            if (stdout.get(4) == null || stdout.isEmpty())
-                throw new Exception("Line 5 is null or empty");
-            if (stdout.get(5) == null || stdout.isEmpty())
-                throw new Exception("Line 6 is null or empty");
-			
+            			
             //evalCw1(stdout);
             evalCw2(stdout);
             
@@ -91,84 +85,53 @@ public class Student {
 		} 			
 	}
 	
+	protected int eval(String out, String test, int outIndex, Class<? extends TestSuite<?>> clazz) {
+		int r = 0;
+		try {
+			Constructor<?> constructor = clazz.getConstructor(String.class, String.class);
+			TestSuite<?> suite = (TestSuite<?>) constructor.newInstance(new Object[] { out, test });
+			r = suite.evaluate();
+			if (r == 0)
+			    this.out.set(outIndex, out);	
+			else
+				addScore(r);
+	        this.tests.addAll(suite.getResult());
+			System.out.println(suite.getResult());
+		} catch(Exception e) {
+		    this.out.set(outIndex, out);	
+			this.exception += System.getProperty("line.separator") + "Line " + (outIndex + 3) + " is null or empty"; 			
+		}		
+		return r;		
+	}
+	
 	protected void evalCw2(List<String> stdout) throws ClassNotFoundException {
-        TestSuite<Cw2> test1 = new FullySpecifiedTestSuiteCw2(stdout.get(2), Harness.getTestInput().get(0));
-		int r1 = test1.evaluate();
-		//addScore(r1/2);
-		if (r1 == 0)
-		    setOut1(stdout.get(2));
-		
-        this.tests.addAll(test1.getResult());
-		System.out.println(test1.getResult());
+		int r1 = 0, r2 = 0, r3 = 0, r4 = 0;
 
-		TestSuite<Cw2> test2 = new FullySpecifiedTestSuiteCw2(stdout.get(3), Harness.getTestInput().get(1));
-		int r2 = test2.evaluate();
-		addScore(Math.min(r1, r2));
-		if (r2 == 0)
-		    setOut2(stdout.get(3));
-		
-        this.tests.addAll(test2.getResult());
-		System.out.println(test2.getResult());
-		
-		TestSuite<Cw2> test3 = new EmptyTestSuiteCw2(stdout.get(4), null);
-        int r3 = test3.evaluate();
-        //addScore(r3/2);
-        if (r3 == 0)
-            setOut3(stdout.get(4));
-
-        System.out.println(test3.getResult());
-        this.tests.addAll(test3.getResult());
-
-        TestSuite<Cw2> test4 = new EmptyTestSuiteCw2(stdout.get(5), null);
-        int r4 = test4.evaluate();
-        addScore(Math.min(r3, r4));
-        if (r4 == 0)
-            setOut4(stdout.get(5));
-
-        System.out.println(test4.getResult());
-        this.tests.addAll(test4.getResult());
-        
-        if (r1 * r2 * r3 * r4 == 0) {
-            this.stdout = stdout.stream().collect(Collectors.joining("\n"));
-        }
+		if (stdout.size() > 2)
+			r1 = eval(stdout.get(2), Harness.getTestInput().get(0), 0, FullySpecifiedTestSuiteCw2.class);
+		if (stdout.size() > 3)
+			r2 = eval(stdout.get(3), Harness.getTestInput().get(1), 1, FullySpecifiedTestSuiteCw2.class);
+		if (stdout.size() > 4)
+			r2 = eval(stdout.get(4), null, 2, EmptyTestSuiteCw2.class);
+		if (stdout.size() > 5)
+			r2 = eval(stdout.get(5), null, 3, EmptyTestSuiteCw2.class);
+                        
+//        if (r1 * r2 * r3 * r4 == 0) {
+//            this.stdout = stdout.stream().collect(Collectors.joining("\n"));
+//        }
     }
 	
 	protected void evalCw1(List<String> stdout) throws ClassNotFoundException {
-        TestSuite<Cw1> test1 = new FullySpecifiedTestSuiteCw1(stdout.get(2), Harness.getTestInput().get(0));
-		int r1 = test1.evaluate();
-		//addScore(r1/2);
-		if (r1 == 0)
-		    setOut1(stdout.get(2));
-		
-        this.tests.addAll(test1.getResult());
-		System.out.println(test1.getResult());
+		int r1 = 0, r2 = 0, r3 = 0, r4 = 0;
 
-		TestSuite<Cw1> test2 = new FullySpecifiedTestSuiteCw1(stdout.get(3), Harness.getTestInput().get(1));
-		int r2 = test2.evaluate();
-		addScore(Math.min(r1, r2));
-		if (r2 == 0)
-		    setOut2(stdout.get(3));
-		
-        this.tests.addAll(test2.getResult());
-		System.out.println(test2.getResult());
-		
-		TestSuite<Cw1> test3 = new EmptyTestSuiteCw1(stdout.get(4), null);
-        int r3 = test3.evaluate();
-        //addScore(r3/2);
-        if (r3 == 0)
-            setOut3(stdout.get(4));
-
-        System.out.println(test3.getResult());
-        this.tests.addAll(test3.getResult());
-
-        TestSuite<Cw1> test4 = new EmptyTestSuiteCw1(stdout.get(5), null);
-        int r4 = test4.evaluate();
-        addScore(Math.min(r3, r4));
-        if (r4 == 0)
-            setOut4(stdout.get(5));
-
-        System.out.println(test4.getResult());
-        this.tests.addAll(test4.getResult());
+		if (stdout.size() > 2)
+			r1 = eval(stdout.get(2), Harness.getTestInput().get(0), 0, FullySpecifiedTestSuiteCw1.class);
+		if (stdout.size() > 3)
+			r2 = eval(stdout.get(3), Harness.getTestInput().get(1), 1, FullySpecifiedTestSuiteCw1.class);
+		if (stdout.size() > 4)
+			r2 = eval(stdout.get(4), null, 2, EmptyTestSuiteCw1.class);
+		if (stdout.size() > 5)
+			r2 = eval(stdout.get(5), null, 3, EmptyTestSuiteCw1.class);
         
         if (r1 * r2 * r3 * r4 == 0) {
             this.stdout = stdout.stream().collect(Collectors.joining("\n"));
@@ -224,38 +187,6 @@ public class Student {
 	public String getException() {
 		return exception;
 	}
-
-    public String getOut1() {
-        return out1;
-    }
-
-    public void setOut1(String out1) {
-        this.out1 = out1;
-    }
-
-    public String getOut2() {
-        return out2;
-    }
-
-    public void setOut2(String out2) {
-        this.out2 = out2;
-    }
-
-    public String getOut3() {
-        return out3;
-    }
-
-    public void setOut3(String out3) {
-        this.out3 = out3;
-    }
-
-    public void setOut4(String out4) {
-        this.out4 = out4;
-    }
-    
-    public String getOut4() {
-        return out4;
-    }
 
     public int getScore() {
         return this.score;

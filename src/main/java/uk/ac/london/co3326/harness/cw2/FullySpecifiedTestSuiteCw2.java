@@ -42,7 +42,7 @@ public class FullySpecifiedTestSuiteCw2 extends TestSuite<Cw2> {
 
 			@Override
 			public Object actual() {
-				return getObject().getB().getUncomputedD();
+				return getObject().getB().getRsa().d;
 			}
 		});
 		tests.add(new BinaryTest("S's private key", 5, etalon) {
@@ -53,9 +53,10 @@ public class FullySpecifiedTestSuiteCw2 extends TestSuite<Cw2> {
 
 			@Override
 			public Object actual() {
-				return getObject().getS().getUncomputedD();
+				return getObject().getS().getRsa().d;
 			}
 		});
+		/*
 		tests.add(new BinaryTest("Encoding", 5, etalon) {
 			@Override
 			public Object expected() {
@@ -86,6 +87,7 @@ public class FullySpecifiedTestSuiteCw2 extends TestSuite<Cw2> {
 				return result;
 			}
 		});
+		*/
 	}
 
 }

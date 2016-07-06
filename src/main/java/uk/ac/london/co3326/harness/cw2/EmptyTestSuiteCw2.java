@@ -79,6 +79,7 @@ public class EmptyTestSuiteCw2 extends TestSuite<Cw2> {
             }
         });
 
+        /*
         tests.add(new UnaryTest("RSA text", 5, null) {
             @Override
             public int pass() {
@@ -128,6 +129,7 @@ public class EmptyTestSuiteCw2 extends TestSuite<Cw2> {
                 });
             }
         }
+        */
 
     }
 
