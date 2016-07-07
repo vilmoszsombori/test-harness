@@ -73,11 +73,10 @@ public class FullySpecifiedTestSuiteCw2 extends TestSuite<Cw2> {
 			}
 		});
 		*/
-		tests.add(new SetComparisonTest("Encryption + decryption", 1, etalon) {
+		tests.add(new SetComparisonTest("Encryption", 1, etalon) {
 			@Override
 			public Object expected() {
 				Set<Long> result = Arrays.stream(getEtalon().getB().encrypt(getEtalon().getA().getNonce().toString()).getEncrypted()).boxed().collect(Collectors.toSet());
-				System.out.println("expected: " + result);
 				return result;
 			}
 
@@ -89,7 +88,6 @@ public class FullySpecifiedTestSuiteCw2 extends TestSuite<Cw2> {
 				    .findFirst()
 				    .map(m -> Arrays.stream(m.getEncrypted()).boxed().collect(Collectors.toSet()))
 				    .orElse(Sets.newHashSet());
-				System.out.println("actual: " + result);
 				return result;
 			}
 		});
