@@ -1,10 +1,12 @@
 package uk.ac.london.co3326.harness.cw2;
 
+import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
+import com.google.common.collect.Sets;
 
 import uk.ac.london.co3326.Cw2;
 import uk.ac.london.co3326.harness.TestSuite;
@@ -70,24 +72,27 @@ public class FullySpecifiedTestSuiteCw2 extends TestSuite<Cw2> {
 						.map(m -> m.getEncoded()[0]).orElse(null);
 			}
 		});
-		tests.add(new SetComparisonTest("Encryption + decryption", 5, etalon) {
+		*/
+		tests.add(new SetComparisonTest("Encryption + decryption", 1, etalon) {
 			@Override
 			public Object expected() {
-				Set<Long> result = getEtalon().getCommunication().stream()
-						.filter(m -> m.getEncoded() != null && m.getEncoded().length > 0)
-						.map(m -> m.getEncoded()[0]).collect(Collectors.toCollection(TreeSet::new));
+				Set<Long> result = Arrays.stream(getEtalon().getB().encrypt(getEtalon().getA().getNonce().toString()).getEncrypted()).boxed().collect(Collectors.toSet());
+				System.out.println("expected: " + result);
 				return result;
 			}
 
 			@Override
 			public Object actual() {
-				Set<Long> result = getObject().getCommunication().stream()
-						.filter(m -> m.getEncoded() != null && m.getEncoded().length > 0)
-						.map(m -> m.getEncoded()[0]).collect(Collectors.toCollection(TreeSet::new));
+				Set<Long> result = getObject().getCommunication()
+				    .stream()
+				    .filter(m -> m.getText().contains(getObject().getA().getNonce().toString()))
+				    .findFirst()
+				    .map(m -> Arrays.stream(m.getEncrypted()).boxed().collect(Collectors.toSet()))
+				    .orElse(Sets.newHashSet());
+				System.out.println("actual: " + result);
 				return result;
 			}
 		});
-		*/
 	}
 
 }

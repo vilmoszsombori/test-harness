@@ -25,7 +25,7 @@ public abstract class SetComparisonTest extends BinaryTest {
 		try {
 		    init(input);
 		    Set<?> intersect = Sets.intersection((Set<?>)expected(), (Set<?>)actual());
-			setScore(getWeight() * (intersect.size() - 1));
+			setScore(getWeight() * intersect.size());
 			if (getScore() == 0) {
 				setError(String.format("Missmatch: expected=%s, actual=%s", expected(), actual()));
 			}
