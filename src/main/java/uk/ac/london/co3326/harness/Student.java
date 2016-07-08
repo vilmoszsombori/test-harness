@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import uk.ac.london.co3326.harness.cw1.EmptyTestSuiteCw1;
@@ -106,20 +105,14 @@ public class Student {
 	}
 	
 	protected void evalCw2(List<String> stdout) throws ClassNotFoundException {
-		int r1 = 0, r2 = 0, r3 = 0, r4 = 0;
+		int r1 = 0, r2 = 0;
 
 		if (stdout.size() > 2)
 			r1 = eval(stdout.get(2), Harness.getTestInput().get(0), 0, FullySpecifiedTestSuiteCw2.class);
 		if (stdout.size() > 3)
-			r2 = eval(stdout.get(3), Harness.getTestInput().get(1), 1, FullySpecifiedTestSuiteCw2.class);
-		/*
-		if (stdout.size() > 4)
-			r2 = eval(stdout.get(4), null, 2, EmptyTestSuiteCw2.class);
-		if (stdout.size() > 5)
-			r2 = eval(stdout.get(5), null, 3, EmptyTestSuiteCw2.class);
-		*/
+			r2 = eval(stdout.get(3), null, 1, EmptyTestSuiteCw2.class);
                         
-        if (r1 + r2 + r3 + r4 == 0) {
+        if (r1 + r2 == 0) {
             this.stdout = stdout.stream().collect(Collectors.joining("\n"));
         }
     }
